@@ -195,11 +195,7 @@ page = st.sidebar.radio(
 if page == "🏠 Home":
 
     st.title(
-        "🎓 Student Performance Risk Prediction & Early Warning System"
-    )
-
-    st.markdown(
-        "## 📌 Navigation Available in Left Sidebar"
+        "Student Performance Risk Prediction & Early Warning System"
     )
 
     st.warning(
@@ -208,9 +204,7 @@ if page == "🏠 Home":
 
     st.write(
         """
-        AI-powered educational analytics platform designed
-        to identify academically at-risk students and
-        provide early intervention support.
+        AI-powered educational analytics platform d
         """
     )
 

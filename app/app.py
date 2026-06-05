@@ -113,35 +113,31 @@ elif page == "Analytics":
 
     st.title("📊 Student Analytics Dashboard")
 
-    # Dataset Preview
-    st.subheader("📄 Dataset Overview")
-    st.dataframe(df.head())
+    st.write("Interactive charts and educational insights")
 
     # Final Exam Score Chart
     st.subheader("📌 Final Exam Score Distribution")
-
     st.bar_chart(df["Final_Exam_Score"])
 
     # Assignment Score Chart
     st.subheader("📌 Assignment Score Analysis")
-
-    st.bar_chart(df["Assignment_Score"])
+    st.line_chart(df["Assignment_Score"])
 
     # Midterm Score Chart
     st.subheader("📌 Midterm Score Analysis")
-
-    st.line_chart(df["Midterm_Score"])
+    st.area_chart(df["Midterm_Score"])
 
     # Attendance Chart
     st.subheader("📌 Attendance Analysis")
+    st.bar_chart(df["Attendance (%)"])
 
-    st.area_chart(df["Attendance (%)"])
-
-    # Pass vs Fail Analysis
+    # Pass vs Fail Chart
     st.subheader("📌 Pass vs Fail Analysis")
+    st.bar_chart(df["Pass_Fail"].value_counts())
 
-    pass_fail_counts = df["Pass_Fail"].value_counts()
+    # Dataset Preview
+    st.subheader("📄 Dataset Preview")
+    st.dataframe(df.head())
 
-    st.bar_chart(pass_fail_counts)
 
 

@@ -1,5 +1,6 @@
 import streamlit as st
 import pandas as pd
+import random
 
 # =====================================================
 # PAGE CONFIG
@@ -71,13 +72,15 @@ section[data-testid="stSidebar"] {
 
 df = pd.read_csv("data/processed_data.csv")
 
-# CREATE STUDENT IDS 1 TO N
+# =====================================================
+# CUSTOM STUDENT IDS
+# =====================================================
 
 df["Student_ID"] = range(1, len(df) + 1)
 
+# =====================================================
 # RANDOM GENDER VALUES
-
-import random
+# =====================================================
 
 df["Gender"] = [
     random.choice(["M", "F"])
@@ -101,7 +104,7 @@ page = st.sidebar.radio(
 )
 
 # =====================================================
-# DASHBOARD
+# DASHBOARD PAGE
 # =====================================================
 
 if page == "Dashboard":
@@ -132,14 +135,16 @@ if page == "Dashboard":
     col1, col2, col3, col4 = st.columns(4)
 
     with col1:
+
         st.metric(
-            "Total Students",
+            "👨‍🎓 Total Students",
             len(df)
         )
 
     with col2:
+
         st.metric(
-            "Average Score",
+            "📈 Average Score",
             round(df["Final_Exam_Score"].mean(), 2)
         )
 
@@ -154,7 +159,7 @@ if page == "Dashboard":
         )
 
         st.metric(
-            "Pass %",
+            "✅ Pass %",
             f"{pass_percent}%"
         )
 
@@ -165,7 +170,7 @@ if page == "Dashboard":
         )
 
         st.metric(
-            "High Risk",
+            "🚨 High Risk",
             high_risk
         )
 
@@ -183,8 +188,10 @@ if page == "Dashboard":
 
         st.write("### Final Exam Scores")
 
+        chart_data = df.set_index("Student_ID")
+
         st.bar_chart(
-            df["Final_Exam_Score"]
+            chart_data["Final_Exam_Score"]
         )
 
     with col2:
@@ -198,7 +205,7 @@ if page == "Dashboard":
     st.divider()
 
     # =====================================================
-    # STUDENT SEARCH
+    # STUDENT DETAILS
     # =====================================================
 
     st.subheader("🔍 Student Details")
@@ -246,76 +253,75 @@ if page == "Dashboard":
     # TOP STUDENTS
     # =====================================================
 
-st.divider()
+    st.subheader("🏆 Top Performing Students")
 
-# =====================================================
-# EDUCATIONAL INSIGHTS
-# =====================================================
+    top_students = df.sort_values(
+        by="Final_Exam_Score",
+        ascending=False
+    ).head(5)
 
-st.subheader("🧠 AI Educational Insights")
+    st.dataframe(top_students)
 
-average_score = round(
-    df["Final_Exam_Score"].mean(),
-    2
-)
+    st.divider()
 
-highest_score = df["Final_Exam_Score"].max()
+    # =====================================================
+    # AI EDUCATIONAL INSIGHTS
+    # =====================================================
 
-lowest_score = df["Final_Exam_Score"].min()
+    st.subheader("🧠 AI Educational Insights")
 
-pass_students = len(
-    df[df["Pass_Fail"] == "Pass"]
-)
+    average_score = round(
+        df["Final_Exam_Score"].mean(),
+        2
+    )
 
-fail_students = len(
-    df[df["Pass_Fail"] == "Fail"]
-)
+    highest_score = df["Final_Exam_Score"].max()
 
-# INSIGHT 1
+    lowest_score = df["Final_Exam_Score"].min()
 
-if average_score >= 75:
+    pass_students = len(
+        df[df["Pass_Fail"] == "Pass"]
+    )
+
+    fail_students = len(
+        df[df["Pass_Fail"] == "Fail"]
+    )
+
+    if average_score >= 75:
+
+        st.success(
+            f"📈 Overall class performance is GOOD with average score {average_score}."
+        )
+
+    elif average_score >= 50:
+
+        st.warning(
+            f"📊 Overall class performance is MODERATE with average score {average_score}."
+        )
+
+    else:
+
+        st.error(
+            f"📉 Overall class performance is POOR with average score {average_score}."
+        )
+
+    st.info(
+        f"🏆 Highest student score is {highest_score}."
+    )
+
+    st.info(
+        f"⚠ Lowest student score is {lowest_score}."
+    )
 
     st.success(
-        f"📈 Overall class performance is GOOD with average score {average_score}."
+        f"✅ {pass_students} students passed successfully."
     )
-
-elif average_score >= 50:
-
-    st.warning(
-        f"📊 Overall class performance is MODERATE with average score {average_score}."
-    )
-
-else:
 
     st.error(
-        f"📉 Overall class performance is POOR with average score {average_score}."
+        f"🚨 {fail_students} students need academic support."
     )
 
-# INSIGHT 2
-
-st.info(
-    f"🏆 Highest student score is {highest_score}."
-)
-
-# INSIGHT 3
-
-st.info(
-    f"⚠ Lowest student score is {lowest_score}."
-)
-
-# INSIGHT 4
-
-st.success(
-    f"✅ {pass_students} students passed successfully."
-)
-
-# INSIGHT 5
-
-st.error(
-    f"🚨 {fail_students} students need academic support."
-)
-
-st.divider()
+    st.divider()
 
 # =====================================================
 # PREDICTION PAGE
@@ -361,13 +367,13 @@ elif page == "Analytics":
 
     st.title("📊 Analytics")
 
-    st.subheader("Final Score Trend")
+    st.subheader("📈 Final Score Trend")
 
     st.line_chart(
         df["Final_Exam_Score"]
     )
 
-    st.subheader("Dataset Preview")
+    st.subheader("📄 Dataset Preview")
 
     st.dataframe(df)
 
@@ -393,9 +399,19 @@ elif page == "About":
 
     ✅ Interactive Charts
 
+    ✅ AI Educational Insights
+
     ✅ Student Monitoring
 
     """)
 
+# =====================================================
+# FOOTER
+# =====================================================
 
+st.markdown("---")
+
+st.markdown(
+    "### 🎓 Built using Streamlit + Python"
+)
 

@@ -30,124 +30,240 @@ header {visibility: hidden;}
 st.markdown("""
 <style>
 
-/* Main Background */
+/* =====================================================
+MAIN BACKGROUND
+===================================================== */
+
 .stApp {
-    background-color: #f5f7fb;
+    background-color: #eef2f7;
+    color: #1f2937;
     font-family: 'Segoe UI', sans-serif;
 }
 
-/* Sidebar */
-section[data-testid="stSidebar"] {
-    background: linear-gradient(180deg, #0b57d0, #4f8dfd);
-    color: white;
-}
+/* =====================================================
+HEADINGS
+===================================================== */
 
-/* Sidebar text */
-section[data-testid="stSidebar"] * {
-    color: white !important;
-}
-
-/* Main Titles */
 h1 {
-    color: #0b1f4d;
+    color: #0f172a !important;
     font-size: 42px !important;
     font-weight: 800 !important;
 }
 
-h2, h3 {
-    color: #0b57d0;
-    font-weight: 700;
+h2 {
+    color: #1e3a8a !important;
+    font-weight: 700 !important;
 }
 
-/* Cards */
+h3 {
+    color: #2563eb !important;
+    font-weight: 700 !important;
+}
+
+/* =====================================================
+TEXT
+===================================================== */
+
+p, label, div {
+    color: #1f2937;
+}
+
+/* =====================================================
+SIDEBAR
+===================================================== */
+
+section[data-testid="stSidebar"] {
+    background: linear-gradient(
+        180deg,
+        #0f172a,
+        #1e3a8a
+    );
+}
+
+/* Sidebar text */
+
+section[data-testid="stSidebar"] * {
+    color: white !important;
+}
+
+/* =====================================================
+METRIC CARDS
+===================================================== */
+
 [data-testid="metric-container"] {
+
     background-color: white;
+
     border-radius: 18px;
-    padding: 20px;
-    box-shadow: 0px 4px 14px rgba(0,0,0,0.08);
-    border: 1px solid #e6eaf2;
+
+    padding: 18px;
+
+    border: 1px solid #dbe4f0;
+
+    box-shadow:
+        0px 4px 12px rgba(0,0,0,0.06);
 }
 
-/* Buttons */
-.stButton>button {
-    background: linear-gradient(to right, #1565c0, #1976d2);
-    color: white;
-    border-radius: 12px;
-    border: none;
-    height: 3.2em;
-    width: 100%;
-    font-size: 17px;
-    font-weight: 600;
-}
+/* =====================================================
+BUTTONS
+===================================================== */
 
-/* Download button */
-.stDownloadButton>button {
-    background: linear-gradient(to right, #1b8f3e, #34a853);
+.stButton > button {
+
+    background: linear-gradient(
+        to right,
+        #2563eb,
+        #1d4ed8
+    );
+
     color: white;
+
     border-radius: 12px;
+
     border: none;
+
     height: 3.2em;
+
     width: 100%;
+
     font-size: 16px;
+
     font-weight: 600;
 }
 
-/* Success box */
+/* Button hover */
+
+.stButton > button:hover {
+
+    background: linear-gradient(
+        to right,
+        #1d4ed8,
+        #1e40af
+    );
+
+    color: white;
+}
+
+/* =====================================================
+DOWNLOAD BUTTON
+===================================================== */
+
+.stDownloadButton > button {
+
+    background: linear-gradient(
+        to right,
+        #15803d,
+        #16a34a
+    );
+
+    color: white;
+
+    border-radius: 12px;
+
+    border: none;
+
+    height: 3.2em;
+
+    width: 100%;
+
+    font-size: 16px;
+
+    font-weight: 600;
+}
+
+/* =====================================================
+SUCCESS / WARNING / ERROR
+===================================================== */
+
 .stSuccess {
+
+    background-color: #dcfce7 !important;
+
     border-radius: 14px;
 }
 
-/* Warning box */
 .stWarning {
+
+    background-color: #fef3c7 !important;
+
     border-radius: 14px;
 }
 
-/* Error box */
 .stError {
+
+    background-color: #fee2e2 !important;
+
     border-radius: 14px;
 }
 
-/* Dataframe */
+/* =====================================================
+DATAFRAME
+===================================================== */
+
 [data-testid="stDataFrame"] {
+
     border-radius: 14px;
+
     overflow: hidden;
-    border: 1px solid #dde3ec;
+
+    border: 1px solid #dbe4f0;
 }
 
-/* Selectbox */
-div[data-baseweb="select"] {
-    background-color: white;
-    border-radius: 10px;
-}
+/* =====================================================
+DIVIDER
+===================================================== */
 
-/* Divider */
 hr {
-    border: 1px solid #dfe6ee;
+    border: 1px solid #dbe4f0;
 }
 
-/* Alert cards */
+/* =====================================================
+ALERT BOX
+===================================================== */
+
 .alert-box {
+
     padding: 15px;
+
     border-radius: 12px;
+
     background-color: #fff4f4;
+
     border-left: 6px solid red;
+
     margin-bottom: 10px;
-    box-shadow: 0px 2px 8px rgba(0,0,0,0.05);
+
+    box-shadow:
+        0px 2px 8px rgba(0,0,0,0.05);
 }
 
-/* Recommendation card */
+/* =====================================================
+RECOMMENDATION BOX
+===================================================== */
+
 .recommend-box {
+
     background-color: #eef7ff;
+
     padding: 15px;
+
     border-radius: 12px;
+
     border-left: 5px solid #1976d2;
 }
 
-/* Footer */
+/* =====================================================
+FOOTER
+===================================================== */
+
 .footer {
+
     text-align: center;
-    padding: 20px;
+
     color: gray;
+
+    padding: 20px;
+
     font-size: 14px;
 }
 
@@ -208,9 +324,7 @@ if page == "Dashboard":
 
     st.divider()
 
-    # =====================================================
     # KPI CARDS
-    # =====================================================
 
     st.subheader("📊 Key Performance Indicators")
 
@@ -256,9 +370,7 @@ if page == "Dashboard":
 
     st.divider()
 
-    # =====================================================
-    # STUDENT SEARCH + ALERTS
-    # =====================================================
+    # STUDENT SEARCH
 
     col1, col2 = st.columns([2, 1])
 
@@ -316,9 +428,7 @@ if page == "Dashboard":
 
     st.divider()
 
-    # =====================================================
-    # PERFORMANCE OVERVIEW
-    # =====================================================
+    # PERFORMANCE CHARTS
 
     st.subheader("📈 Performance Overview")
 
@@ -340,9 +450,7 @@ if page == "Dashboard":
 
     st.divider()
 
-    # =====================================================
     # TOP & LOW PERFORMERS
-    # =====================================================
 
     st.subheader("🏆 Top & Low Performing Students")
 
@@ -371,9 +479,7 @@ if page == "Dashboard":
 
     st.divider()
 
-    # =====================================================
     # DATASET PREVIEW
-    # =====================================================
 
     st.subheader("📄 Dataset Preview")
 

@@ -62,7 +62,6 @@ if page == "Dashboard":
 
     st.dataframe(student_data)
 
-    ```python
 # Safe Performance Insights
 
 if "Assignment_Score" in df.columns:
@@ -82,8 +81,6 @@ if "Attendance (%)" in df.columns:
         "📌 Attendance:",
         int(student_data["Attendance (%)"].values[0])
     )
-```
-
 
     # Dataset Preview
     st.subheader("📄 Dataset Preview")

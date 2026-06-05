@@ -14,13 +14,13 @@ st.set_page_config(
 )
 
 # =====================================================
-# SAFE DARK THEME
+# PROFESSIONAL DARK THEME
 # =====================================================
 
 st.markdown("""
 <style>
 
-/* APP BACKGROUND */
+/* MAIN BACKGROUND */
 
 .stApp {
     background-color: #0b1120;
@@ -72,6 +72,10 @@ section[data-testid="stSidebar"] {
 
 df = pd.read_csv("data/processed_data.csv")
 
+# KEEP ONLY 5 STUDENTS
+
+df = df.head(5)
+
 # =====================================================
 # CUSTOM STUDENT IDS
 # =====================================================
@@ -119,8 +123,8 @@ if page == "Dashboard":
 
     st.write(
         """
-        Educational analytics platform for identifying
-        academically at-risk students.
+        Educational analytics platform designed to identify
+        academically at-risk students and provide intervention support.
         """
     )
 
@@ -219,7 +223,25 @@ if page == "Dashboard":
         df["Student_ID"] == selected_student
     ]
 
-    st.dataframe(student_data)
+    col1, col2 = st.columns(2)
+
+    with col1:
+
+        st.metric(
+            "Final Score",
+            int(student_data["Final_Exam_Score"].values[0])
+        )
+
+    with col2:
+
+        st.metric(
+            "Attendance",
+            f"{int(student_data['Attendance (%)'].values[0])}%"
+        )
+
+    st.success(
+        f"Selected Student: {selected_student}"
+    )
 
     st.divider()
 
@@ -239,28 +261,11 @@ if page == "Dashboard":
             f"{len(risk_students)} students are at HIGH RISK"
         )
 
-        st.dataframe(risk_students)
-
     else:
 
         st.success(
             "No high-risk students detected"
         )
-
-    st.divider()
-
-    # =====================================================
-    # TOP STUDENTS
-    # =====================================================
-
-    st.subheader("🏆 Top Performing Students")
-
-    top_students = df.sort_values(
-        by="Final_Exam_Score",
-        ascending=False
-    ).head(5)
-
-    st.dataframe(top_students)
 
     st.divider()
 
@@ -321,15 +326,13 @@ if page == "Dashboard":
         f"🚨 {fail_students} students need academic support."
     )
 
-    st.divider()
-
 # =====================================================
 # PREDICTION PAGE
 # =====================================================
 
 elif page == "Prediction":
 
-    st.title("🎯 Risk Prediction")
+    st.title("🎯 Student Risk Prediction")
 
     attendance = st.slider(
         "Attendance %",
@@ -365,7 +368,7 @@ elif page == "Prediction":
 
 elif page == "Analytics":
 
-    st.title("📊 Analytics")
+    st.title("📊 Analytics Dashboard")
 
     st.subheader("📈 Final Score Trend")
 
@@ -373,7 +376,7 @@ elif page == "Analytics":
         df["Final_Exam_Score"]
     )
 
-    st.subheader("📄 Dataset Preview")
+    st.subheader("📄 Student Dataset")
 
     st.dataframe(df)
 
@@ -389,7 +392,10 @@ elif page == "About":
 
     ### Student Performance Risk Prediction & Early Warning System
 
-    Features:
+    AI-powered educational analytics platform designed
+    for identifying academically at-risk students.
+
+    ### Features
 
     ✅ Student Risk Prediction
 
@@ -404,14 +410,4 @@ elif page == "About":
     ✅ Student Monitoring
 
     """)
-
-# =====================================================
-# FOOTER
-# =====================================================
-
-st.markdown("---")
-
-st.markdown(
-    "### 🎓 Built using Streamlit + Python"
-)
 

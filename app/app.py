@@ -28,33 +28,35 @@ if st.button("Predict Risk"):
 
     st.subheader("Prediction Result")
 
-    # Simple risk logic
     if final_exam_score < 50 or attendance < 40:
 
         st.error("⚠ EARLY WARNING ALERT: Student is at HIGH academic risk!")
 
-        st.subheader("Recommended Interventions")
+        st.subheader("📌 Personalized Recommendations")
 
-        st.write("• Extra tutoring sessions")
-        st.write("• Parent-teacher meetings")
-        st.write("• Weekly progress tracking")
-        st.write("• Attendance improvement plan")
+        st.write("• Attend remedial coaching classes")
+        st.write("• Increase study hours daily")
+        st.write("• Schedule weekly mentor meetings")
+        st.write("• Improve attendance consistency")
+        st.write("• Complete pending assignments")
 
     elif final_exam_score < 75:
 
         st.warning("⚠ Student is at MEDIUM risk and needs monitoring.")
 
-        st.subheader("Recommendations")
+        st.subheader("📌 Personalized Recommendations")
 
-        st.write("• Improve study hours")
-        st.write("• Attend revision classes")
-        st.write("• Increase assignment practice")
+        st.write("• Revise difficult subjects regularly")
+        st.write("• Practice mock tests")
+        st.write("• Improve classroom participation")
+        st.write("• Increase assignment submission rate")
 
     else:
 
         st.success("✅ Student performance is stable.")
 
-        st.subheader("Recommendations")
+        st.subheader("📌 Personalized Recommendations")
 
-        st.write("• Maintain consistent performance")
-        st.write("• Participate in advanced activities")
+        st.write("• Maintain current performance")
+        st.write("• Participate in advanced learning activities")
+        st.write("• Help peers in collaborative learning")

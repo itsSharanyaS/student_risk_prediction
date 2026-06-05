@@ -45,7 +45,54 @@ if page == "Dashboard":
 
         st.metric("High Risk Students", high_risk_count)
 
+    # =========================
+    # STUDENT SEARCH SYSTEM
+    # =========================
+
+    st.subheader("🔍 Student Search System")
+
+    selected_student = st.selectbox(
+        "Select Student ID",
+        df["Student_ID"]
+    )
+
+    student_data = df[df["Student_ID"] == selected_student]
+
+    st.write("### Student Details")
+
+    st.dataframe(student_data)
+
+    # Performance Insights
+    st.write("### Performance Insights")
+
+    st.write(
+        "📌 Final Exam Score:",
+        int(student_data["Final_Exam_Score"].values[0])
+    )
+
+    st.write(
+        "📌 Assignment Score:",
+        int(student_data["Assignment_Score"].values[0])
+    )
+
+    st.write(
+        "📌 Midterm Score:",
+        int(student_data["Midterm_Score"].values[0])
+    )
+
+    st.write(
+        "📌 Attendance:",
+        int(student_data["Attendance (%)"].values[0])
+    )
+
+    st.write(
+        "📌 Pass/Fail Status:",
+        student_data["Pass_Fail"].values[0]
+    )
+
+    # Dataset Preview
     st.subheader("📄 Dataset Preview")
+
     st.dataframe(df.head())
 
 # =========================
@@ -180,11 +227,10 @@ st.write(
     "📌 Pass/Fail Status:",
     student_data["Pass_Fail"].values[0]
 )
-
-   
-    # Dataset Preview
-    st.subheader("📄 Dataset Preview")
-    st.dataframe(df.head())
+  
+# Dataset Preview
+st.subheader("📄 Dataset Preview")
+st.dataframe(df.head())
 
 
 

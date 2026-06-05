@@ -8,7 +8,8 @@ import pandas as pd
 st.set_page_config(
     page_title="Student Risk Prediction System",
     page_icon="🎓",
-    layout="wide"
+    layout="wide",
+    initial_sidebar_state="expanded"
 )
 
 # =====================================================
@@ -30,17 +31,17 @@ header {visibility: hidden;}
 st.markdown("""
 <style>
 
-/* MAIN BACKGROUND */
+/* MAIN APP */
 
 .stApp {
     background-color: #111827;
     font-family: 'Segoe UI', sans-serif;
 }
 
-/* HEADINGS */
+/* TITLES */
 
 h1 {
-    color: white !important;
+    color: #ffffff !important;
     font-size: 42px !important;
     font-weight: 800 !important;
 }
@@ -49,10 +50,11 @@ h2, h3 {
     color: #f3f4f6 !important;
 }
 
-/* TEXT */
+/* NORMAL TEXT */
 
 p {
     color: #d1d5db;
+    font-size: 18px;
 }
 
 /* SIDEBAR */
@@ -75,9 +77,12 @@ section[data-testid="stSidebar"] * {
 
     border: 1px solid #374151;
 
-    padding: 15px;
+    padding: 18px;
 
-    border-radius: 16px;
+    border-radius: 18px;
+
+    box-shadow:
+        0px 4px 12px rgba(0,0,0,0.25);
 }
 
 /* BUTTONS */
@@ -93,6 +98,19 @@ section[data-testid="stSidebar"] * {
     border: none;
 
     font-weight: 600;
+
+    height: 3em;
+
+    width: 100%;
+}
+
+/* BUTTON HOVER */
+
+.stButton > button:hover {
+
+    background-color: #1d4ed8;
+
+    color: white;
 }
 
 /* DOWNLOAD BUTTON */
@@ -106,6 +124,10 @@ section[data-testid="stSidebar"] * {
     border-radius: 10px;
 
     border: none;
+
+    height: 3em;
+
+    width: 100%;
 }
 
 /* ALERT BOX */
@@ -140,6 +162,15 @@ section[data-testid="stSidebar"] * {
     color: white;
 }
 
+/* DATAFRAME */
+
+[data-testid="stDataFrame"] {
+
+    border-radius: 12px;
+
+    overflow: hidden;
+}
+
 /* FOOTER */
 
 .footer {
@@ -149,6 +180,8 @@ section[data-testid="stSidebar"] * {
     color: #9ca3af;
 
     padding: 20px;
+
+    font-size: 14px;
 }
 
 </style>
@@ -202,7 +235,7 @@ if page == "Dashboard":
     st.divider()
 
     # =====================================================
-    # KPI DASHBOARD CARDS
+    # KPI DASHBOARD
     # =====================================================
 
     st.subheader("📊 Dashboard Overview")
@@ -232,7 +265,7 @@ if page == "Dashboard":
         )
 
         st.metric(
-            "✅ Pass %",
+            "✅ Pass Percentage",
             f"{pass_percent}%"
         )
 
@@ -243,7 +276,7 @@ if page == "Dashboard":
         )
 
         st.metric(
-            "🚨 High Risk",
+            "🚨 High Risk Students",
             high_risk
         )
 
@@ -385,7 +418,7 @@ elif page == "Prediction":
 
     st.write(
         """
-        Predict student academic risk level.
+        Predict student academic risk level using academic indicators.
         """
     )
 
@@ -492,7 +525,7 @@ elif page == "Analytics":
 
     st.line_chart(df["Final_Exam_Score"])
 
-    st.subheader("📊 Pass vs Fail")
+    st.subheader("📊 Pass vs Fail Analysis")
 
     st.bar_chart(
         df["Pass_Fail"].value_counts()

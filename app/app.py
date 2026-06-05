@@ -22,7 +22,12 @@ df = pd.read_csv("data/processed_data.csv")
 
 page = st.sidebar.selectbox(
     "Choose Section",
-    ["Dashboard", "Prediction", "Analytics", "About Project"]
+    [
+        "Dashboard",
+        "Prediction",
+        "Analytics",
+        "About Project"
+    ]
 )
 
 # =========================
@@ -37,7 +42,10 @@ if page == "Dashboard":
         "AI-powered system to identify academically at-risk students."
     )
 
-    # KPI Metrics
+    # =========================
+    # KPI METRICS
+    # =========================
+
     col1, col2, col3 = st.columns(3)
 
     with col1:
@@ -54,6 +62,8 @@ if page == "Dashboard":
             "Pass Students",
             len(df[df["Pass_Fail"] == "Pass"])
         )
+
+    st.divider()
 
     # =========================
     # STUDENT SEARCH SYSTEM
@@ -86,11 +96,13 @@ if page == "Dashboard":
         mime="text/csv"
     )
 
+    st.divider()
+
     # =========================
     # PERFORMANCE INSIGHTS
     # =========================
 
-    st.write("### Performance Insights")
+    st.subheader("📌 Performance Insights")
 
     if "Final_Exam_Score" in df.columns:
         st.write(
@@ -110,7 +122,12 @@ if page == "Dashboard":
             student_data["Pass_Fail"].values[0]
         )
 
-    # Dataset Preview
+    st.divider()
+
+    # =========================
+    # DATASET PREVIEW
+    # =========================
+
     st.subheader("📄 Dataset Preview")
 
     st.dataframe(df.head())
@@ -122,6 +139,14 @@ if page == "Dashboard":
 elif page == "Prediction":
 
     st.title("🎯 Student Risk Prediction")
+
+    st.write(
+        "Predict academic risk level using student performance indicators."
+    )
+
+    # =========================
+    # INPUT SLIDERS
+    # =========================
 
     attendance = st.slider(
         "Attendance (%)",
@@ -159,7 +184,7 @@ elif page == "Prediction":
     )
 
     # =========================
-    # PREDICTION BUTTON
+    # PREDICT BUTTON
     # =========================
 
     if st.button("Predict Risk"):
@@ -229,25 +254,93 @@ elif page == "Prediction":
 
 elif page == "Analytics":
 
-    st.title("📊 Student Analytics Dashboard")
+    st.title("📊 Advanced Student Analytics Dashboard")
 
     st.write(
-        "Interactive charts and educational insights"
+        "Interactive educational analytics and institutional insights"
     )
 
-    # Final Exam Score Chart
+    # =========================
+    # KPI METRICS
+    # =========================
+
+    col1, col2, col3 = st.columns(3)
+
+    with col1:
+        st.metric(
+            "Average Final Score",
+            round(df["Final_Exam_Score"].mean(), 2)
+        )
+
+    with col2:
+
+        if "Attendance (%)" in df.columns:
+            st.metric(
+                "Average Attendance",
+                round(df["Attendance (%)"].mean(), 2)
+            )
+
+    with col3:
+        st.metric(
+            "Pass Percentage",
+            round(
+                (
+                    len(df[df["Pass_Fail"] == "Pass"])
+                    / len(df)
+                ) * 100,
+                2
+            )
+        )
+
+    st.divider()
+
+    # =========================
+    # FINAL SCORE DISTRIBUTION
+    # =========================
+
     st.subheader("📌 Final Exam Score Distribution")
 
-    if "Final_Exam_Score" in df.columns:
-        st.bar_chart(df["Final_Exam_Score"])
+    st.bar_chart(df["Final_Exam_Score"])
 
-    # Pass vs Fail Chart
+    # =========================
+    # PASS FAIL ANALYSIS
+    # =========================
+
     st.subheader("📌 Pass vs Fail Analysis")
 
-    if "Pass_Fail" in df.columns:
-        st.bar_chart(df["Pass_Fail"].value_counts())
+    st.bar_chart(df["Pass_Fail"].value_counts())
 
-    # Dataset Preview
+    # =========================
+    # TOP PERFORMERS
+    # =========================
+
+    st.subheader("🏆 Top Performing Students")
+
+    top_students = df.sort_values(
+        by="Final_Exam_Score",
+        ascending=False
+    ).head(5)
+
+    st.dataframe(top_students)
+
+    # =========================
+    # LOW PERFORMERS
+    # =========================
+
+    st.subheader("⚠ Students Needing Attention")
+
+    low_students = df.sort_values(
+        by="Final_Exam_Score"
+    ).head(5)
+
+    st.dataframe(low_students)
+
+    st.divider()
+
+    # =========================
+    # DATASET PREVIEW
+    # =========================
+
     st.subheader("📄 Dataset Preview")
 
     st.dataframe(df.head())
@@ -281,6 +374,8 @@ elif page == "About Project":
     • Downloadable Student Reports
 
     • Risk Visualization System
+
+    • Advanced Analytics Dashboard
 
     ### Objective
 

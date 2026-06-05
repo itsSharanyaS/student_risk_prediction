@@ -575,23 +575,25 @@ elif page == "📘 About":
 
     ### Technologies Used
 
-    ✅ Python
-
-    ✅ Streamlit
-
-    ✅ Pandas
-
-    ✅ Plotly
+    - Python
+    - Streamlit
+    - Pandas
+    - Plotly
 
     ### Key Features
 
-    ✅ Risk Prediction
+    - Risk Prediction
+    - Early Warning Alerts
+    - Dashboard Analytics
+    - AI Educational Insights
+    - Risk Distribution Analysis
+    - Downloadable Reports
 
-    ✅ Early Warning Alerts
+    ### Project Objective
 
-    ✅ Dashboard Analytics
-
-    ✅ AI Educational Insights
+    To help educational institutions identify
+    at-risk students early and improve
+    academic outcomes through AI-driven analytics.
 
     """)
 

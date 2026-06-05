@@ -1,13 +1,25 @@
 import streamlit as st
 import pandas as pd
 
-# Load dataset
+# =========================
+# PAGE CONFIG
+# =========================
+
+st.set_page_config(
+    page_title="Student Risk Prediction System",
+    layout="wide"
+)
+
+# =========================
+# LOAD DATASET
+# =========================
+
 df = pd.read_csv("data/processed_data.csv")
 
-# Page Title
-st.set_page_config(page_title="Student Risk Prediction System", layout="wide")
+# =========================
+# SIDEBAR NAVIGATION
+# =========================
 
-# Sidebar Navigation
 page = st.sidebar.selectbox(
     "Choose Section",
     ["Dashboard", "Prediction", "Analytics", "About Project"]
@@ -16,11 +28,14 @@ page = st.sidebar.selectbox(
 # =========================
 # DASHBOARD PAGE
 # =========================
+
 if page == "Dashboard":
 
     st.title("🎓 Student Performance Risk Prediction & Early Warning System")
 
-    st.write("AI-powered system to identify academically at-risk students.")
+    st.write(
+        "AI-powered system to identify academically at-risk students."
+    )
 
     # KPI Metrics
     col1, col2, col3 = st.columns(3)
@@ -35,15 +50,10 @@ if page == "Dashboard":
         )
 
     with col3:
-
-        if "Risk_Level" in df.columns:
-            high_risk_count = len(
-                df[df["Risk_Level"] == "High Risk"]
-            )
-        else:
-            high_risk_count = 0
-
-        st.metric("High Risk Students", high_risk_count)
+        st.metric(
+            "Pass Students",
+            len(df[df["Pass_Fail"] == "Pass"])
+        )
 
     # =========================
     # STUDENT SEARCH SYSTEM
@@ -53,7 +63,8 @@ if page == "Dashboard":
 
     selected_student = st.selectbox(
         "Select Student ID",
-        df["Student_ID"]
+        df["Student_ID"],
+        key="student_selector"
     )
 
     student_data = df[df["Student_ID"] == selected_student]
@@ -62,25 +73,38 @@ if page == "Dashboard":
 
     st.dataframe(student_data)
 
-# Safe Performance Insights
+    # Performance Insights
+    st.write("### Performance Insights")
 
-if "Assignment_Score" in df.columns:
-    st.write(
-        "📌 Assignment Score:",
-        int(student_data["Assignment_Score"].values[0])
-    )
+    if "Final_Exam_Score" in df.columns:
+        st.write(
+            "📌 Final Exam Score:",
+            int(student_data["Final_Exam_Score"].values[0])
+        )
 
-if "Midterm_Score" in df.columns:
-    st.write(
-        "📌 Midterm Score:",
-        int(student_data["Midterm_Score"].values[0])
-    )
+    if "Assignment_Score" in df.columns:
+        st.write(
+            "📌 Assignment Score:",
+            int(student_data["Assignment_Score"].values[0])
+        )
 
-if "Attendance (%)" in df.columns:
-    st.write(
-        "📌 Attendance:",
-        int(student_data["Attendance (%)"].values[0])
-    )
+    if "Midterm_Score" in df.columns:
+        st.write(
+            "📌 Midterm Score:",
+            int(student_data["Midterm_Score"].values[0])
+        )
+
+    if "Attendance (%)" in df.columns:
+        st.write(
+            "📌 Attendance:",
+            int(student_data["Attendance (%)"].values[0])
+        )
+
+    if "Pass_Fail" in df.columns:
+        st.write(
+            "📌 Pass/Fail Status:",
+            student_data["Pass_Fail"].values[0]
+        )
 
     # Dataset Preview
     st.subheader("📄 Dataset Preview")
@@ -90,19 +114,45 @@ if "Attendance (%)" in df.columns:
 # =========================
 # PREDICTION PAGE
 # =========================
+
 elif page == "Prediction":
 
     st.title("🎯 Student Risk Prediction")
 
-    attendance = st.slider("Attendance (%)", 0, 100, 75)
+    attendance = st.slider(
+        "Attendance (%)",
+        0,
+        100,
+        75
+    )
 
-    study_hours = st.slider("Study Hours Per Day", 0, 15, 5)
+    study_hours = st.slider(
+        "Study Hours Per Day",
+        0,
+        15,
+        5
+    )
 
-    assignment_score = st.slider("Assignment Score", 0, 100, 60)
+    assignment_score = st.slider(
+        "Assignment Score",
+        0,
+        100,
+        60
+    )
 
-    midterm_score = st.slider("Midterm Score", 0, 100, 60)
+    midterm_score = st.slider(
+        "Midterm Score",
+        0,
+        100,
+        60
+    )
 
-    final_exam_score = st.slider("Final Exam Score", 0, 100, 60)
+    final_exam_score = st.slider(
+        "Final Exam Score",
+        0,
+        100,
+        60
+    )
 
     # Prediction Button
     if st.button("Predict Risk"):
@@ -112,7 +162,9 @@ elif page == "Prediction":
         # HIGH RISK
         if final_exam_score < 50 or attendance < 40:
 
-            st.error("⚠ EARLY WARNING ALERT: Student is at HIGH academic risk!")
+            st.error(
+                "⚠ EARLY WARNING ALERT: Student is at HIGH academic risk!"
+            )
 
             st.subheader("📌 Personalized Recommendations")
 
@@ -125,7 +177,9 @@ elif page == "Prediction":
         # MEDIUM RISK
         elif final_exam_score < 75:
 
-            st.warning("⚠ Student is at MEDIUM risk and needs monitoring.")
+            st.warning(
+                "⚠ Student is at MEDIUM risk and needs monitoring."
+            )
 
             st.subheader("📌 Personalized Recommendations")
 
@@ -137,7 +191,9 @@ elif page == "Prediction":
         # LOW RISK
         else:
 
-            st.success("✅ Student performance is stable.")
+            st.success(
+                "✅ Student performance is stable."
+            )
 
             st.subheader("📌 Personalized Recommendations")
 
@@ -148,81 +204,61 @@ elif page == "Prediction":
 # =========================
 # ANALYTICS PAGE
 # =========================
+
 elif page == "Analytics":
 
     st.title("📊 Student Analytics Dashboard")
 
-    st.write("Interactive charts and educational insights")
+    st.write(
+        "Interactive charts and educational insights"
+    )
 
     # Final Exam Score Chart
     st.subheader("📌 Final Exam Score Distribution")
-    st.bar_chart(df["Final_Exam_Score"])
 
-    # Assignment Score Chart
-    st.subheader("📌 Assignment Score Analysis")
-    st.line_chart(df["Assignment_Score"])
-
-    # Midterm Score Chart
-    st.subheader("📌 Midterm Score Analysis")
-    st.area_chart(df["Midterm_Score"])
-
-    # Attendance Chart
-    st.subheader("📌 Attendance Analysis")
-    st.bar_chart(df["Attendance (%)"])
+    if "Final_Exam_Score" in df.columns:
+        st.bar_chart(df["Final_Exam_Score"])
 
     # Pass vs Fail Chart
     st.subheader("📌 Pass vs Fail Analysis")
-    st.bar_chart(df["Pass_Fail"].value_counts())
 
+    if "Pass_Fail" in df.columns:
+        st.bar_chart(df["Pass_Fail"].value_counts())
+
+    # Dataset Preview
+    st.subheader("📄 Dataset Preview")
+
+    st.dataframe(df.head())
 
 # =========================
-# STUDENT SEARCH SYSTEM
+# ABOUT PROJECT PAGE
 # =========================
 
-st.subheader("🔍 Student Search System")
+elif page == "About Project":
 
-selected_student = st.selectbox(
-    "Select Student ID",
-    df["Student_ID"]
-)
+    st.title("📘 About Project")
 
-student_data = df[df["Student_ID"] == selected_student]
+    st.write("""
+    ## Student Performance Risk Prediction & Early Warning System
 
-st.write("### Student Details")
+    This project helps educational institutions identify students
+    who are academically at risk using AI and analytics.
 
-st.dataframe(student_data)
+    ### Key Features
 
-# Performance Insights
-st.write("### Performance Insights")
+    • Early Warning Alerts
 
-st.write(
-    "📌 Final Exam Score:",
-    int(student_data["Final_Exam_Score"].values[0])
-)
+    • Student Performance Analytics
 
-st.write(
-    "📌 Assignment Score:",
-    int(student_data["Assignment_Score"].values[0])
-)
+    • Personalized Recommendations
 
-st.write(
-    "📌 Midterm Score:",
-    int(student_data["Midterm_Score"].values[0])
-)
+    • Interactive Dashboard
 
-st.write(
-    "📌 Attendance:",
-    int(student_data["Attendance (%)"].values[0])
-)
+    • Student Monitoring System
 
-st.write(
-    "📌 Pass/Fail Status:",
-    student_data["Pass_Fail"].values[0]
-)
-  
-# Dataset Preview
-st.subheader("📄 Dataset Preview")
-st.dataframe(df.head())
+    ### Objective
 
-
+    To help schools and colleges take proactive intervention
+    measures before academic failure occurs.
+    """)
 

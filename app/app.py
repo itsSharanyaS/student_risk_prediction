@@ -75,6 +75,15 @@ df = pd.read_csv("data/processed_data.csv")
 
 df["Student_ID"] = range(1, len(df) + 1)
 
+# RANDOM GENDER VALUES
+
+import random
+
+df["Gender"] = [
+    random.choice(["M", "F"])
+    for _ in range(len(df))
+]
+
 # =====================================================
 # SIDEBAR
 # =====================================================
@@ -326,13 +335,5 @@ elif page == "About":
 
     """)
 
-# =====================================================
-# FOOTER
-# =====================================================
 
-st.markdown("---")
-
-st.markdown(
-    "### 🎓 Built using Streamlit + Python"
-)
 

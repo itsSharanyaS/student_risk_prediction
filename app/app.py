@@ -187,6 +187,18 @@ if page == "🏠 Home":
         "🎓 Student Performance Risk Prediction & Early Warning System"
     )
 
+    # =====================================================
+    # NAVIGATION NOTICE
+    # =====================================================
+
+    st.markdown(
+        "## 📌 Navigation Available in Left Sidebar"
+    )
+
+    st.warning(
+        "Use the LEFT SIDEBAR MENU to access Dashboard, Prediction, Analytics, and About pages."
+    )
+
     st.write(
         """
         AI-powered educational analytics platform designed
@@ -286,8 +298,38 @@ if page == "🏠 Home":
 
     st.divider()
 
+    # =====================================================
+    # EXPLORE SYSTEM
+    # =====================================================
+
+    st.subheader("🚀 Explore System")
+
+    col1, col2 = st.columns(2)
+
+    with col1:
+
+        st.info(
+            "📊 Dashboard\n\nView student analytics, charts, alerts, and AI insights."
+        )
+
+        st.info(
+            "📈 Analytics\n\nAnalyze attendance trends and academic performance."
+        )
+
+    with col2:
+
+        st.info(
+            "🎯 Prediction\n\nPredict student academic risk using AI logic."
+        )
+
+        st.info(
+            "📘 About\n\nLearn about the project objectives and technologies."
+        )
+
+    st.divider()
+
     st.success(
-        "🚀 Navigate using the sidebar menu to explore the dashboard and predictions."
+        "🎯 Navigate through the platform using the left sidebar menu."
     )
 
 # =====================================================
@@ -719,4 +761,13 @@ elif page == "📘 About":
 
     """)
 
+# =====================================================
+# FOOTER
+# =====================================================
+
+st.markdown("---")
+
+st.markdown(
+    "### Predictions might not be always correct"
+)
 

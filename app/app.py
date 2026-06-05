@@ -568,32 +568,31 @@ elif page == "📘 About":
 
     st.write("""
 
-    ### Student Performance Risk Prediction & Early Warning System
+### Student Performance Risk Prediction & Early Warning System
 
-    AI-powered educational analytics platform designed
-    for identifying academically at-risk students.
+AI-powered educational analytics platform designed
+for identifying academically at-risk students.
 
-    ### Technologies Used
+### Technologies Used
 
-    - Python
-    - Streamlit
-    - Pandas
-    - Plotly
+- Python
+- Streamlit
+- Pandas
+- Plotly
 
-    ### Key Features
+### Key Features
 
-    - Risk Prediction
-    - Early Warning Alerts
-    - Dashboard Analytics
-    - AI Educational Insights
-    - Risk Distribution Analysis
-    - Downloadable Reports
+- Risk Prediction
+- Early Warning Alerts
+- Dashboard Analytics
+- AI Educational Insights
+- Risk Distribution Analysis
+- Downloadable Reports
 
-    ### Project Objective
+### Project Objective
 
-    To help educational institutions identify
-    at-risk students early and improve
-    academic outcomes through AI-driven analytics.
+To help educational institutions identify
+at-risk students early and improve
+academic outcomes through AI-driven analytics.
 
-    """)
-
+""")

@@ -7,6 +7,7 @@ import pandas as pd
 
 st.set_page_config(
     page_title="Student Risk Prediction System",
+    page_icon="🎓",
     layout="wide"
 )
 
@@ -17,8 +18,10 @@ st.set_page_config(
 df = pd.read_csv("data/processed_data.csv")
 
 # =========================
-# SIDEBAR NAVIGATION
+# SIDEBAR
 # =========================
+
+st.sidebar.title("🎓 Navigation")
 
 page = st.sidebar.selectbox(
     "Choose Section",
@@ -39,28 +42,44 @@ if page == "Dashboard":
     st.title("🎓 Student Performance Risk Prediction & Early Warning System")
 
     st.write(
-        "AI-powered system to identify academically at-risk students."
+        """
+        AI-powered educational analytics platform designed to identify
+        academically at-risk students and provide early intervention support.
+        """
     )
+
+    st.divider()
 
     # =========================
     # KPI METRICS
     # =========================
 
+    st.subheader("📊 Key Performance Indicators")
+
     col1, col2, col3 = st.columns(3)
 
     with col1:
-        st.metric("Total Students", len(df))
+        st.metric(
+            "Total Students",
+            len(df)
+        )
 
     with col2:
         st.metric(
-            "Average Score",
+            "Average Final Score",
             round(df["Final_Exam_Score"].mean(), 2)
         )
 
     with col3:
         st.metric(
-            "Pass Students",
-            len(df[df["Pass_Fail"] == "Pass"])
+            "Pass Percentage",
+            round(
+                (
+                    len(df[df["Pass_Fail"] == "Pass"])
+                    / len(df)
+                ) * 100,
+                2
+            )
         )
 
     st.divider()
@@ -84,10 +103,10 @@ if page == "Dashboard":
     st.dataframe(student_data)
 
     # =========================
-    # DOWNLOAD STUDENT REPORT
+    # DOWNLOAD REPORT
     # =========================
 
-    csv = student_data.to_csv(index=False).encode('utf-8')
+    csv = student_data.to_csv(index=False).encode("utf-8")
 
     st.download_button(
         label="⬇ Download Student Report",
@@ -106,20 +125,50 @@ if page == "Dashboard":
 
     if "Final_Exam_Score" in df.columns:
         st.write(
-            "📌 Final Exam Score:",
+            "📘 Final Exam Score:",
             int(student_data["Final_Exam_Score"].values[0])
         )
 
     if "Attendance (%)" in df.columns:
         st.write(
-            "📌 Attendance:",
+            "📘 Attendance:",
             int(student_data["Attendance (%)"].values[0])
         )
 
     if "Pass_Fail" in df.columns:
         st.write(
-            "📌 Pass/Fail Status:",
+            "📘 Pass / Fail Status:",
             student_data["Pass_Fail"].values[0]
+        )
+
+    st.divider()
+
+    # =========================
+    # EARLY WARNING ALERT SYSTEM
+    # =========================
+
+    st.subheader("🚨 Early Warning Alerts")
+
+    high_risk_students = df[
+        (df["Final_Exam_Score"] < 50)
+    ]
+
+    if len(high_risk_students) > 0:
+
+        for index, row in high_risk_students.iterrows():
+
+            st.error(
+                f"⚠ Student {row['Student_ID']} is academically at HIGH RISK"
+            )
+
+            st.write(
+                "📌 Immediate academic intervention recommended."
+            )
+
+    else:
+
+        st.success(
+            "✅ No high-risk students detected."
         )
 
     st.divider()
@@ -141,11 +190,16 @@ elif page == "Prediction":
     st.title("🎯 Student Risk Prediction")
 
     st.write(
-        "Predict academic risk level using student performance indicators."
+        """
+        Predict the academic risk level of a student using
+        attendance and performance indicators.
+        """
     )
 
+    st.divider()
+
     # =========================
-    # INPUT SLIDERS
+    # INPUT SECTION
     # =========================
 
     attendance = st.slider(
@@ -183,8 +237,10 @@ elif page == "Prediction":
         60
     )
 
+    st.divider()
+
     # =========================
-    # PREDICT BUTTON
+    # PREDICTION BUTTON
     # =========================
 
     if st.button("Predict Risk"):
@@ -257,8 +313,12 @@ elif page == "Analytics":
     st.title("📊 Advanced Student Analytics Dashboard")
 
     st.write(
-        "Interactive educational analytics and institutional insights"
+        """
+        Interactive educational analytics and institutional insights.
+        """
     )
+
+    st.divider()
 
     # =========================
     # KPI METRICS
@@ -295,7 +355,7 @@ elif page == "Analytics":
     st.divider()
 
     # =========================
-    # FINAL SCORE DISTRIBUTION
+    # FINAL EXAM SCORE DISTRIBUTION
     # =========================
 
     st.subheader("📌 Final Exam Score Distribution")
@@ -303,7 +363,7 @@ elif page == "Analytics":
     st.bar_chart(df["Final_Exam_Score"])
 
     # =========================
-    # PASS FAIL ANALYSIS
+    # PASS VS FAIL ANALYSIS
     # =========================
 
     st.subheader("📌 Pass vs Fail Analysis")

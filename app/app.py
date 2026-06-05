@@ -12,35 +12,112 @@ st.set_page_config(
 )
 
 # =========================
-# CUSTOM CSS
+# HIDE STREAMLIT BRANDING
+# =========================
+
+st.markdown(
+    """
+    <style>
+    #MainMenu {visibility: hidden;}
+    footer {visibility: hidden;}
+    header {visibility: hidden;}
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+
+# =========================
+# PROFESSIONAL CUSTOM CSS
 # =========================
 
 st.markdown("""
 <style>
 
-.main {
-    background-color: #f5f7fa;
+/* Main App Background */
+.stApp {
+    background-color: #f4f6f9;
 }
 
+/* Main Headers */
 h1, h2, h3 {
-    color: #1f4e79;
+    color: #0b3d91;
+    font-family: 'Segoe UI', sans-serif;
+    font-weight: 700;
 }
 
+/* Paragraph Text */
+p {
+    color: #333333;
+    font-size: 16px;
+}
+
+/* Sidebar */
+section[data-testid="stSidebar"] {
+    background-color: #dbe9ff;
+}
+
+/* Metric Cards */
+[data-testid="metric-container"] {
+    background-color: white;
+    border-radius: 12px;
+    padding: 15px;
+    box-shadow: 0px 2px 8px rgba(0,0,0,0.1);
+}
+
+/* Buttons */
 .stButton>button {
-    background-color: #1f77b4;
+    background-color: #1565c0;
     color: white;
     border-radius: 10px;
     height: 3em;
     width: 100%;
     font-size: 16px;
+    border: none;
+    font-weight: bold;
 }
 
+/* Button Hover */
+.stButton>button:hover {
+    background-color: #0d47a1;
+    color: white;
+}
+
+/* Download Button */
 .stDownloadButton>button {
-    background-color: green;
+    background-color: #2e7d32;
     color: white;
     border-radius: 10px;
     height: 3em;
     width: 100%;
+    font-size: 16px;
+    border: none;
+    font-weight: bold;
+}
+
+/* Success Box */
+.stSuccess {
+    border-radius: 10px;
+}
+
+/* Warning Box */
+.stWarning {
+    border-radius: 10px;
+}
+
+/* Error Box */
+.stError {
+    border-radius: 10px;
+}
+
+/* Dataframe Styling */
+[data-testid="stDataFrame"] {
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+/* Divider */
+hr {
+    border: 1px solid #d0d7de;
 }
 
 </style>

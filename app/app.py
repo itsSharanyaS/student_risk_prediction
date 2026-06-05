@@ -10,6 +10,23 @@ model = joblib.load("models/risk_model.pkl")
 
 st.title("🎓 Student Risk Prediction System")
 
+# KPI Metrics
+col1, col2, col3 = st.columns(3)
+
+with col1:
+    st.metric("Total Students", len(df))
+
+with col2:
+    st.metric(
+        "Average Score",
+        round(df["Final_Exam_Score"].mean(), 2)
+    )
+
+with col3:
+    high_risk_count = len(df[df["Risk_Level"] == "High Risk"])
+
+    st.metric("High Risk Students", high_risk_count)
+
 st.subheader("Processed Dataset")
 st.dataframe(df)
 

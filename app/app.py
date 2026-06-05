@@ -113,33 +113,35 @@ elif page == "Analytics":
 
     st.title("📊 Student Analytics Dashboard")
 
-    # Risk Distribution
-    st.subheader("📌 Risk Distribution")
+    # Dataset Preview
+    st.subheader("📄 Dataset Overview")
+    st.dataframe(df.head())
 
-    if "Risk_Level" in df.columns:
-        st.bar_chart(df["Risk_Level"].value_counts())
-
-    # Pass vs Fail
-    st.subheader("📌 Pass vs Fail Analysis")
-
-    if "Pass_Fail" in df.columns:
-        st.bar_chart(df["Pass_Fail"].value_counts())
-
-    # Final Exam Scores
+    # Final Exam Score Chart
     st.subheader("📌 Final Exam Score Distribution")
 
     st.bar_chart(df["Final_Exam_Score"])
 
-    # Attendance Analysis
-    if "Attendance (%)" in df.columns:
+    # Assignment Score Chart
+    st.subheader("📌 Assignment Score Analysis")
 
-        st.subheader("📌 Attendance Analysis")
+    st.bar_chart(df["Assignment_Score"])
 
-        st.line_chart(df["Attendance (%)"])
+    # Midterm Score Chart
+    st.subheader("📌 Midterm Score Analysis")
 
-    # Study Hours Analysis
-    if "Study_Hours_per_Week" in df.columns:
+    st.line_chart(df["Midterm_Score"])
 
-        st.subheader("📌 Study Hours Analysis")
+    # Attendance Chart
+    st.subheader("📌 Attendance Analysis")
 
-        st.area_chart(df["Study_Hours_per_Week"])
+    st.area_chart(df["Attendance (%)"])
+
+    # Pass vs Fail Analysis
+    st.subheader("📌 Pass vs Fail Analysis")
+
+    pass_fail_counts = df["Pass_Fail"].value_counts()
+
+    st.bar_chart(pass_fail_counts)
+
+

@@ -184,25 +184,27 @@ if page == "Dashboard":
 
     st.divider()
 
-    # =====================================================
-    # STUDENT SEARCH
-    # =====================================================
+# =====================================================
+# STUDENT SEARCH
+# =====================================================
 
-    st.subheader("🔍 Student Details")
+st.subheader("🔍 Student Details")
 
-    selected_student = st.selectbox(
-        "Select Student",
-        df["Student_ID"]
-    )
+# CREATE STUDENT IDs FROM 1 TO 10
 
-    student_data = df[
-        df["Student_ID"] == selected_student
-    ]
+df["Student_ID"] = range(1, len(df) + 1)
 
-    st.dataframe(student_data)
+selected_student = st.selectbox(
+    "Select Student",
+    df["Student_ID"]
+)
 
-    st.divider()
+student_data = df[
+    df["Student_ID"] == selected_student
+]
 
+st.dataframe(student_data)
+ 
     # =====================================================
     # EARLY WARNING ALERTS
     # =====================================================

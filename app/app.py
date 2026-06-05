@@ -113,48 +113,33 @@ elif page == "Analytics":
 
     st.title("📊 Student Analytics Dashboard")
 
-    st.subheader("Risk Distribution")
+    # Risk Distribution
+    st.subheader("📌 Risk Distribution")
 
     if "Risk_Level" in df.columns:
         st.bar_chart(df["Risk_Level"].value_counts())
 
-    st.subheader("Pass vs Fail Analysis")
+    # Pass vs Fail
+    st.subheader("📌 Pass vs Fail Analysis")
 
     if "Pass_Fail" in df.columns:
         st.bar_chart(df["Pass_Fail"].value_counts())
 
-    st.subheader("Final Exam Score Distribution")
+    # Final Exam Scores
+    st.subheader("📌 Final Exam Score Distribution")
 
     st.bar_chart(df["Final_Exam_Score"])
 
-# =========================
-# ABOUT PROJECT PAGE
-# =========================
-elif page == "About Project":
+    # Attendance Analysis
+    if "Attendance (%)" in df.columns:
 
-    st.title("📘 About Project")
+        st.subheader("📌 Attendance Analysis")
 
-    st.write("""
-    ## Student Performance Risk Prediction & Early Warning System
+        st.line_chart(df["Attendance (%)"])
 
-    This project helps educational institutions identify students
-    who are academically at risk using AI and analytics.
+    # Study Hours Analysis
+    if "Study_Hours_per_Week" in df.columns:
 
-    ### Key Features:
-    
-    • Early Warning Alerts
-    
-    • Student Performance Analytics
-    
-    • Personalized Recommendations
-    
-    • Interactive Dashboard
-    
-    • Risk Monitoring System
+        st.subheader("📌 Study Hours Analysis")
 
-    ### Objective:
-    
-    To help schools and colleges take proactive intervention
-    measures before academic failure occurs.
-    """)
-
+        st.area_chart(df["Study_Hours_per_Week"])

@@ -158,13 +158,21 @@ elif page == "Prediction":
         60
     )
 
-    # Prediction Button
+    # =========================
+    # PREDICTION BUTTON
+    # =========================
+
     if st.button("Predict Risk"):
 
-        st.subheader("Prediction Result")
+        st.subheader("📊 Prediction Result")
 
+        # =========================
         # HIGH RISK
+        # =========================
+
         if final_exam_score < 50 or attendance < 40:
+
+            st.error("🔴 HIGH RISK")
 
             st.error(
                 "⚠ EARLY WARNING ALERT: Student is at HIGH academic risk!"
@@ -178,8 +186,13 @@ elif page == "Prediction":
             st.write("• Improve attendance consistency")
             st.write("• Complete pending assignments")
 
+        # =========================
         # MEDIUM RISK
+        # =========================
+
         elif final_exam_score < 75:
+
+            st.warning("🟡 MEDIUM RISK")
 
             st.warning(
                 "⚠ Student is at MEDIUM risk and needs monitoring."
@@ -192,8 +205,13 @@ elif page == "Prediction":
             st.write("• Improve classroom participation")
             st.write("• Increase assignment submission rate")
 
+        # =========================
         # LOW RISK
+        # =========================
+
         else:
+
+            st.success("🟢 LOW RISK")
 
             st.success(
                 "✅ Student performance is stable."
@@ -262,9 +280,10 @@ elif page == "About Project":
 
     • Downloadable Student Reports
 
+    • Risk Visualization System
+
     ### Objective
 
     To help schools and colleges take proactive intervention
     measures before academic failure occurs.
     """)
-

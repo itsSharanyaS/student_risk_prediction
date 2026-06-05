@@ -78,16 +78,29 @@ df = pd.read_csv("data/processed_data.csv")
 
 df = df.head(5)
 
-# CUSTOM IDS
+# =====================================================
+# CREATE STUDENT IDS
+# =====================================================
 
 df["Student_ID"] = range(1, len(df) + 1)
 
-# RANDOM GENDER
+# =====================================================
+# RANDOM GENDER VALUES
+# =====================================================
 
 df["Gender"] = [
     random.choice(["M", "F"])
     for _ in range(len(df))
 ]
+
+# =====================================================
+# FIND ATTENDANCE COLUMN AUTOMATICALLY
+# =====================================================
+
+attendance_column = [
+    col for col in df.columns
+    if "Attendance" in col
+][0]
 
 # =====================================================
 # SIDEBAR
@@ -156,29 +169,61 @@ if page == "Home":
 
     st.divider()
 
-# =====================================================
-# QUICK STATS
-# =====================================================
+    # =====================================================
+    # QUICK STATISTICS
+    # =====================================================
 
-st.subheader("📈 Quick Statistics")
+    st.subheader("📈 Quick Statistics")
 
-# CALCULATE PASS PERCENTAGE USING FINAL SCORE
+    pass_count = len(
+        df[df["Final_Exam_Score"] >= 50]
+    )
 
-pass_count = len(
-    df[df["Final_Exam_Score"] >= 50]
-)
+    pass_percent = round(
+        (pass_count / len(df)) * 100,
+        2
+    )
 
-pass_percent = round(
-    (pass_count / len(df)) * 100,
-    2
-)
+    high_risk = len(
+        df[df["Final_Exam_Score"] < 50]
+    )
 
-high_risk = len(
-    df[df["Final_Exam_Score"] < 50]
-)
+    col1, col2, col3, col4 = st.columns(4)
 
-col1, col2, col3, col4 = st.columns(4)
-  
+    with col1:
+
+        st.metric(
+            "Students",
+            len(df)
+        )
+
+    with col2:
+
+        st.metric(
+            "Average Score",
+            round(df["Final_Exam_Score"].mean(), 2)
+        )
+
+    with col3:
+
+        st.metric(
+            "Pass %",
+            f"{pass_percent}%"
+        )
+
+    with col4:
+
+        st.metric(
+            "High Risk",
+            high_risk
+        )
+
+    st.divider()
+
+    st.success(
+        "🚀 Use the sidebar to explore Dashboard, Prediction, and Analytics."
+    )
+
 # =====================================================
 # DASHBOARD PAGE
 # =====================================================
@@ -231,6 +276,8 @@ elif page == "Dashboard":
 
     with col1:
 
+        st.write("### Final Exam Scores")
+
         chart_data = df.set_index("Student_ID")
 
         st.bar_chart(
@@ -239,9 +286,17 @@ elif page == "Dashboard":
 
     with col2:
 
-        st.bar_chart(
-            df["Pass_Fail"].value_counts()
-        )
+        st.write("### Pass vs Fail")
+
+        pass_fail_data = pd.DataFrame({
+            "Category": ["Pass", "Fail"],
+            "Count": [
+                len(df[df["Final_Exam_Score"] >= 50]),
+                len(df[df["Final_Exam_Score"] < 50])
+            ]
+        }).set_index("Category")
+
+        st.bar_chart(pass_fail_data)
 
     st.divider()
 
@@ -273,7 +328,7 @@ elif page == "Dashboard":
 
         st.metric(
             "Attendance",
-            f"{int(student_data['Attendance (%)'].values[0])}%"
+            f"{int(student_data[attendance_column].values[0])}%"
         )
 
     with col3:
@@ -286,7 +341,7 @@ elif page == "Dashboard":
     st.divider()
 
     # =====================================================
-    # ALERTS
+    # EARLY WARNING ALERTS
     # =====================================================
 
     st.subheader("🚨 Early Warning Alerts")
@@ -310,7 +365,7 @@ elif page == "Dashboard":
     st.divider()
 
     # =====================================================
-    # AI INSIGHTS
+    # AI EDUCATIONAL INSIGHTS
     # =====================================================
 
     st.subheader("🧠 AI Educational Insights")
@@ -422,10 +477,14 @@ elif page == "Analytics":
         df["Final_Exam_Score"]
     )
 
-    st.subheader("Pass vs Fail Analysis")
+    st.subheader("Attendance Analysis")
+
+    attendance_chart = df.set_index(
+        "Student_ID"
+    )
 
     st.bar_chart(
-        df["Pass_Fail"].value_counts()
+        attendance_chart[attendance_column]
     )
 
 # =====================================================
@@ -474,3 +533,4 @@ st.markdown("---")
 st.markdown(
     "### 🎓 Built using Streamlit + Python"
 )
+

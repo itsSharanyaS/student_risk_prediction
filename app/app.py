@@ -147,14 +147,11 @@ st.sidebar.markdown(
     """
     # 🎓 Dashboard Menu
     
-    
+    Navigate through the AI-powered student analytics system.
+    """
 )
 
-st.sidebar.markdown("---")
-
-st.sidebar.info(
-    "AI-powered educational analytics dashboard."
-)
+st.sidebar.subheader("Navigation")
 
 # =====================================================
 # SIDEBAR STATS
@@ -177,11 +174,11 @@ st.sidebar.metric(
 page = st.sidebar.radio(
     "Select Page",
     [
-        "🏠 Home",
-        "📊 Dashboard",
-        "🎯 Prediction",
-        "📈 Analytics",
-        "📘 About"
+        "Home",
+        "Dashboard",
+        "Prediction",
+        "Analytics",
+        "About"
     ]
 )
 
@@ -195,8 +192,9 @@ if page == "🏠 Home":
         "Student Performance Risk Prediction & Early Warning System"
     )
 
+ 
     st.warning(
-        "Use the LEFT SIDEBAR MENU to access more!!"
+        "Use the LEFT SIDEBAR MENU to explore more!!"
     )
 
 
@@ -568,31 +566,30 @@ elif page == "📘 About":
 
     st.write("""
 
-### Student Performance Risk Prediction & Early Warning System
+    ### Student Performance Risk Prediction & Early Warning System
 
-AI-powered educational analytics platform designed
-for identifying academically at-risk students.
+    AI-powered educational analytics platform designed
+    for identifying academically at-risk students.
 
-### Technologies Used
+    ### Technologies Used
 
-- Python
-- Streamlit
-- Pandas
-- Plotly
+    ✅ Python
 
-### Key Features
+    ✅ Streamlit
 
-- Risk Prediction
-- Early Warning Alerts
-- Dashboard Analytics
-- AI Educational Insights
-- Risk Distribution Analysis
-- Downloadable Reports
+    ✅ Pandas
 
-### Project Objective
+    ✅ Plotly
 
-To help educational institutions identify
-at-risk students early and improve
-academic outcomes through AI-driven analytics.
+    ### Key Features
 
-""")
+    ✅ Risk Prediction
+
+    ✅ Early Warning Alerts
+
+    ✅ Dashboard Analytics
+
+    ✅ AI Educational Insights
+
+    """)
+

@@ -26,28 +26,35 @@ final_exam_score = st.slider("Final Exam Score", 0, 100, 60)
 
 if st.button("Predict Risk"):
 
-    sample = [[
-        0,
-        0,
-        attendance,
-        study_hours,
-        assignment_score,
-        midterm_score,
-        final_exam_score,
-        0,0,0,0
-    ]]
-
-    prediction = model.predict(sample)
-
-    risk = prediction[0]
-
     st.subheader("Prediction Result")
 
-    if risk == "High Risk":
+    # Simple risk logic
+    if final_exam_score < 50 or attendance < 40:
+
         st.error("⚠ EARLY WARNING ALERT: Student is at HIGH academic risk!")
 
-    elif risk == "Medium Risk":
+        st.subheader("Recommended Interventions")
+
+        st.write("• Extra tutoring sessions")
+        st.write("• Parent-teacher meetings")
+        st.write("• Weekly progress tracking")
+        st.write("• Attendance improvement plan")
+
+    elif final_exam_score < 75:
+
         st.warning("⚠ Student is at MEDIUM risk and needs monitoring.")
 
+        st.subheader("Recommendations")
+
+        st.write("• Improve study hours")
+        st.write("• Attend revision classes")
+        st.write("• Increase assignment practice")
+
     else:
+
         st.success("✅ Student performance is stable.")
+
+        st.subheader("Recommendations")
+
+        st.write("• Maintain consistent performance")
+        st.write("• Participate in advanced activities")

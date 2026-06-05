@@ -39,4 +39,17 @@ if st.button("Predict Risk"):
 
     prediction = model.predict(sample)
 
-    st.success(f"Predicted Risk Level: {prediction[0]}")
+    prediction = model.predict(sample)
+
+risk = prediction[0]
+
+st.subheader("Prediction Result")
+
+if risk == "High Risk":
+    st.error("⚠ EARLY WARNING ALERT: Student is at HIGH academic risk!")
+
+elif risk == "Medium Risk":
+    st.warning("⚠ Student is at MEDIUM risk and needs monitoring.")
+
+else:
+    st.success("✅ Student performance is stable.")

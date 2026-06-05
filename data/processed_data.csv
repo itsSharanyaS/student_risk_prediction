@@ -1,0 +1,11 @@
+Student_ID,Gender,Age,Study_Hours_Per_Week,Attendance_Percentage,Previous_Score,Parental_Education_Level,Internet_Access,Extracurricular_Activities,Sleep_Hours,Final_Exam_Score,Pass_Fail,Risk_Level
+0,1,17,12,85,68,0,1,1,7,72,1,Medium Risk
+1,0,16,15,92,74,2,1,0,8,81,1,Low Risk
+2,1,18,8,70,60,1,0,1,6,58,0,Medium Risk
+3,0,17,20,95,88,2,1,1,8,90,1,Low Risk
+4,1,16,5,65,55,1,0,0,5,49,0,High Risk
+5,0,18,14,88,70,0,1,1,7,76,1,Low Risk
+6,1,17,10,80,65,0,1,0,6,67,1,Medium Risk
+7,0,16,18,93,85,2,1,1,8,89,1,Low Risk
+8,1,18,7,72,58,1,0,1,6,54,0,Medium Risk
+9,0,17,16,90,78,0,1,0,7,82,1,Low Risk

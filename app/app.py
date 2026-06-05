@@ -44,15 +44,7 @@ p, label, div {
 /* SIDEBAR */
 
 section[data-testid="stSidebar"] {
-    background-color: #1e293b;
-    border-right: 3px solid #2563eb;
-    width: 320px !important;
-}
-
-/* SIDEBAR CONTENT */
-
-.css-1d391kg {
-    background-color: #1e293b;
+    background-color: #111827;
 }
 
 /* BUTTONS */
@@ -75,12 +67,6 @@ section[data-testid="stSidebar"] {
     border-radius: 15px;
 }
 
-/* HORIZONTAL LINE */
-
-hr {
-    border: 1px solid #374151;
-}
-
 </style>
 """, unsafe_allow_html=True)
 
@@ -90,9 +76,7 @@ hr {
 
 df = pd.read_csv("data/processed_data.csv")
 
-# =====================================================
 # KEEP ONLY 5 STUDENTS
-# =====================================================
 
 df = df.head(5)
 
@@ -143,19 +127,9 @@ df["Risk_Level"] = df["Final_Exam_Score"].apply(
 # SIDEBAR
 # =====================================================
 
-st.sidebar.markdown(
-    """
-    # 🎓 Dashboard Menu
-    
-    Navigate through the AI-powered student analytics system.
-    """
-)
+st.sidebar.title("🎓 Navigation")
 
-st.sidebar.subheader("Navigation")
-
-# =====================================================
 # SIDEBAR STATS
-# =====================================================
 
 st.sidebar.metric(
     "Students",
@@ -167,12 +141,8 @@ st.sidebar.metric(
     len(df[df["Risk_Level"] == "High Risk"])
 )
 
-# =====================================================
-# NAVIGATION
-# =====================================================
-
 page = st.sidebar.radio(
-    "Select Page",
+    "Go To",
     [
         "Home",
         "Dashboard",
@@ -186,17 +156,28 @@ page = st.sidebar.radio(
 # HOME PAGE
 # =====================================================
 
-if page == "🏠 Home":
+if page == "Home":
 
     st.title(
-        "Student Performance Risk Prediction & Early Warning System"
+        "🎓 Student Performance Risk Prediction & Early Warning System"
     )
 
- 
-    st.warning(
-        "Use the LEFT SIDEBAR MENU to explore more!!"
+    st.write(
+        """
+        AI-powered educational analytics platform designed
+        to identify academically at-risk students and
+        provide early intervention support.
+        """
     )
 
+    st.divider()
+
+    # HERO IMAGE
+
+    st.image(
+        "https://images.unsplash.com/photo-1522202176988-66273c2fd55f",
+        use_container_width=True
+    )
 
     st.divider()
 
@@ -289,45 +270,15 @@ if page == "🏠 Home":
 
     st.divider()
 
-    # =====================================================
-    # EXPLORE SYSTEM
-    # =====================================================
-
-    st.subheader("🚀 Explore System")
-
-    col1, col2 = st.columns(2)
-
-    with col1:
-
-        st.info(
-            "📊 Dashboard\n\nView student analytics, charts, alerts, and AI insights."
-        )
-
-        st.info(
-            "📈 Analytics\n\nAnalyze attendance trends and academic performance."
-        )
-
-    with col2:
-
-        st.info(
-            "🎯 Prediction\n\nPredict student academic risk using AI logic."
-        )
-
-        st.info(
-            "📘 About\n\nLearn about the project objectives and technologies."
-        )
-
-    st.divider()
-
     st.success(
-        "🎯 Navigate through the platform using the left sidebar menu."
+        "🚀 Use the sidebar to explore Dashboard, Prediction, and Analytics."
     )
 
 # =====================================================
 # DASHBOARD PAGE
 # =====================================================
 
-elif page == "📊 Dashboard":
+elif page == "Dashboard":
 
     st.title("📊 Student Dashboard")
 
@@ -335,28 +286,33 @@ elif page == "📊 Dashboard":
         f"Last Updated: {datetime.now().strftime('%d %B %Y %H:%M')}"
     )
 
-    st.divider()
-
-    # KPI CARDS
+    st.subheader("Dashboard Overview")
 
     col1, col2, col3, col4 = st.columns(4)
 
     with col1:
-        st.metric("Students", len(df))
+
+        st.metric(
+            "Students",
+            len(df)
+        )
 
     with col2:
+
         st.metric(
             "Average Score",
             round(df["Final_Exam_Score"].mean(), 2)
         )
 
     with col3:
+
         st.metric(
             "Highest Score",
             df["Final_Exam_Score"].max()
         )
 
     with col4:
+
         st.metric(
             "Lowest Score",
             df["Final_Exam_Score"].min()
@@ -431,7 +387,9 @@ elif page == "📊 Dashboard":
         df["Student_ID"] == selected_student
     ]
 
-    score = int(student_data["Final_Exam_Score"].values[0])
+    score = int(
+        student_data["Final_Exam_Score"].values[0]
+    )
 
     attendance = int(
         student_data[attendance_column].values[0]
@@ -444,31 +402,76 @@ elif page == "📊 Dashboard":
     col1, col2, col3, col4 = st.columns(4)
 
     with col1:
-        st.metric("Final Score", score)
+
+        st.metric(
+            "Final Score",
+            score
+        )
 
     with col2:
-        st.metric("Attendance", f"{attendance}%")
+
+        st.metric(
+            "Attendance",
+            f"{attendance}%"
+        )
 
     with col3:
-        st.metric("Gender", gender)
+
+        st.metric(
+            "Gender",
+            gender
+        )
 
     with col4:
-        st.metric("Risk Level", risk)
 
-    # RISK ALERTS
+        st.metric(
+            "Risk Level",
+            risk
+        )
+
+    # RISK COLOR
 
     if risk == "High Risk":
+
         st.error("🔴 HIGH RISK STUDENT")
 
     elif risk == "Medium Risk":
+
         st.warning("🟡 MEDIUM RISK STUDENT")
 
     else:
+
         st.success("🟢 LOW RISK STUDENT")
 
     st.divider()
 
-    # AI INSIGHTS
+    # =====================================================
+    # EARLY WARNING ALERTS
+    # =====================================================
+
+    st.subheader("🚨 Real-Time Alerts")
+
+    risk_students = len(
+        df[df["Risk_Level"] == "High Risk"]
+    )
+
+    if risk_students > 0:
+
+        st.error(
+            f"⚠ ALERT: {risk_students} students require immediate intervention."
+        )
+
+    else:
+
+        st.success(
+            "No high-risk students detected."
+        )
+
+    st.divider()
+
+    # =====================================================
+    # AI EDUCATIONAL INSIGHTS
+    # =====================================================
 
     st.subheader("🧠 AI Educational Insights")
 
@@ -478,19 +481,40 @@ elif page == "📊 Dashboard":
     )
 
     if average_score >= 75:
-        st.success("📈 Overall class performance is GOOD.")
+
+        st.success(
+            "📈 Overall class performance is GOOD."
+        )
 
     elif average_score >= 50:
-        st.warning("📊 Overall class performance is MODERATE.")
+
+        st.warning(
+            "📊 Overall class performance is MODERATE."
+        )
 
     else:
-        st.error("📉 Overall class performance is POOR.")
+
+        st.error(
+            "📉 Overall class performance is POOR."
+        )
+
+    st.info(
+        "📌 Students with low attendance tend to perform poorly."
+    )
+
+    st.info(
+        f"🏆 Highest score: {df['Final_Exam_Score'].max()}"
+    )
+
+    st.info(
+        f"⚠ Lowest score: {df['Final_Exam_Score'].min()}"
+    )
 
 # =====================================================
 # PREDICTION PAGE
 # =====================================================
 
-elif page == "🎯 Prediction":
+elif page == "Prediction":
 
     st.title("🎯 Student Risk Prediction")
 
@@ -499,6 +523,20 @@ elif page == "🎯 Prediction":
         0,
         100,
         75
+    )
+
+    study_hours = st.slider(
+        "Study Hours",
+        0,
+        15,
+        5
+    )
+
+    assignment_score = st.slider(
+        "Assignment Score",
+        0,
+        100,
+        70
     )
 
     final_score = st.slider(
@@ -520,23 +558,49 @@ elif page == "🎯 Prediction":
                 "Student needs immediate academic support."
             )
 
+            st.info(
+                "Recommendations:\n\n"
+                "- Increase attendance\n"
+                "- Attend mentoring sessions\n"
+                "- Improve assignment completion"
+            )
+
         elif final_score < 75:
 
             st.warning("🟡 MEDIUM RISK")
+
+            st.info(
+                "Recommendations:\n\n"
+                "- Practice mock tests\n"
+                "- Improve consistency\n"
+                "- Increase study hours"
+            )
 
         else:
 
             st.success("🟢 LOW RISK")
 
+            st.success(
+                "Student is performing well."
+            )
+
+            st.info(
+                "Recommendations:\n\n"
+                "- Maintain current performance\n"
+                "- Continue regular practice"
+            )
+
         st.success(
             f"Prediction Confidence: {confidence}%"
         )
+
+        st.balloons()
 
 # =====================================================
 # ANALYTICS PAGE
 # =====================================================
 
-elif page == "📈 Analytics":
+elif page == "Analytics":
 
     st.title("📈 Analytics Dashboard")
 
@@ -556,11 +620,37 @@ elif page == "📈 Analytics":
         attendance_chart[attendance_column]
     )
 
+    st.subheader("Attendance vs Final Score")
+
+    scatter_fig = px.scatter(
+        df,
+        x=attendance_column,
+        y="Final_Exam_Score",
+        color="Risk_Level",
+        hover_data=["Student_ID"]
+    )
+
+    st.plotly_chart(
+        scatter_fig,
+        use_container_width=True
+    )
+
+    # DOWNLOAD BUTTON
+
+    csv = df.to_csv(index=False).encode("utf-8")
+
+    st.download_button(
+        label="📥 Download Student Report",
+        data=csv,
+        file_name="student_report.csv",
+        mime="text/csv"
+    )
+
 # =====================================================
 # ABOUT PAGE
 # =====================================================
 
-elif page == "📘 About":
+elif page == "About":
 
     st.title("📘 About Project")
 
@@ -581,6 +671,8 @@ elif page == "📘 About":
 
     ✅ Plotly
 
+    ✅ Machine Learning
+
     ### Key Features
 
     ✅ Risk Prediction
@@ -591,5 +683,14 @@ elif page == "📘 About":
 
     ✅ AI Educational Insights
 
-    """)
+    ✅ Risk Distribution Analysis
 
+    ✅ Downloadable Reports
+
+    ### Project Objective
+
+    To help educational institutions identify
+    at-risk students early and improve
+    academic outcomes through AI-driven analytics.
+
+    """)

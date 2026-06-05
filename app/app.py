@@ -246,14 +246,76 @@ if page == "Dashboard":
     # TOP STUDENTS
     # =====================================================
 
-    st.subheader("🏆 Top Performing Students")
+st.divider()
 
-    top_students = df.sort_values(
-        by="Final_Exam_Score",
-        ascending=False
-    ).head(5)
+# =====================================================
+# EDUCATIONAL INSIGHTS
+# =====================================================
 
-    st.dataframe(top_students)
+st.subheader("🧠 AI Educational Insights")
+
+average_score = round(
+    df["Final_Exam_Score"].mean(),
+    2
+)
+
+highest_score = df["Final_Exam_Score"].max()
+
+lowest_score = df["Final_Exam_Score"].min()
+
+pass_students = len(
+    df[df["Pass_Fail"] == "Pass"]
+)
+
+fail_students = len(
+    df[df["Pass_Fail"] == "Fail"]
+)
+
+# INSIGHT 1
+
+if average_score >= 75:
+
+    st.success(
+        f"📈 Overall class performance is GOOD with average score {average_score}."
+    )
+
+elif average_score >= 50:
+
+    st.warning(
+        f"📊 Overall class performance is MODERATE with average score {average_score}."
+    )
+
+else:
+
+    st.error(
+        f"📉 Overall class performance is POOR with average score {average_score}."
+    )
+
+# INSIGHT 2
+
+st.info(
+    f"🏆 Highest student score is {highest_score}."
+)
+
+# INSIGHT 3
+
+st.info(
+    f"⚠ Lowest student score is {lowest_score}."
+)
+
+# INSIGHT 4
+
+st.success(
+    f"✅ {pass_students} students passed successfully."
+)
+
+# INSIGHT 5
+
+st.error(
+    f"🚨 {fail_students} students need academic support."
+)
+
+st.divider()
 
 # =====================================================
 # PREDICTION PAGE

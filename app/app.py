@@ -69,45 +69,33 @@ if page == "Dashboard":
 
     student_data = df[df["Student_ID"] == selected_student]
 
-     id="ncb8v4"
-# =========================
-# DOWNLOAD STUDENT REPORT
-# =========================
-
-csv = student_data.to_csv(index=False).encode('utf-8')
-
-st.download_button(
-    label="⬇ Download Student Report",
-    data=csv,
-    file_name="student_report.csv",
-    mime="text/csv"
-)
-
-
-
     st.write("### Student Details")
 
     st.dataframe(student_data)
 
-    # Performance Insights
+    # =========================
+    # DOWNLOAD STUDENT REPORT
+    # =========================
+
+    csv = student_data.to_csv(index=False).encode('utf-8')
+
+    st.download_button(
+        label="⬇ Download Student Report",
+        data=csv,
+        file_name="student_report.csv",
+        mime="text/csv"
+    )
+
+    # =========================
+    # PERFORMANCE INSIGHTS
+    # =========================
+
     st.write("### Performance Insights")
 
     if "Final_Exam_Score" in df.columns:
         st.write(
             "📌 Final Exam Score:",
             int(student_data["Final_Exam_Score"].values[0])
-        )
-
-    if "Assignment_Score" in df.columns:
-        st.write(
-            "📌 Assignment Score:",
-            int(student_data["Assignment_Score"].values[0])
-        )
-
-    if "Midterm_Score" in df.columns:
-        st.write(
-            "📌 Midterm Score:",
-            int(student_data["Midterm_Score"].values[0])
         )
 
     if "Attendance (%)" in df.columns:
@@ -271,6 +259,8 @@ elif page == "About Project":
     • Interactive Dashboard
 
     • Student Monitoring System
+
+    • Downloadable Student Reports
 
     ### Objective
 

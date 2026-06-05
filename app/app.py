@@ -10,7 +10,6 @@ from datetime import datetime
 
 st.set_page_config(
     page_title="Student Risk Prediction System",
-    page_icon="🎓",
     layout="wide",
     initial_sidebar_state="expanded"
 )
@@ -184,26 +183,16 @@ page = st.sidebar.radio(
 if page == "🏠 Home":
 
     st.title(
-        "🎓 Student Performance Risk Prediction & Early Warning System"
+        "Student Performance Risk Prediction & Early Warning System"
     )
 
     # =====================================================
     # NAVIGATION NOTICE
     # =====================================================
 
-    st.markdown(
-        "## 📌 Navigation Available in Left Sidebar"
-    )
-
-    st.warning(
-        "Use the LEFT SIDEBAR MENU to access Dashboard, Prediction, Analytics, and About pages."
-    )
-
     st.write(
         """
-        AI-powered educational analytics platform designed
-        to identify academically at-risk students and
-        provide early intervention support.
+        AI-powered educational analytics platform 
         """
     )
 

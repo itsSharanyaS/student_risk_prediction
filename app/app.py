@@ -13,7 +13,7 @@ st.set_page_config(
 )
 
 # =====================================================
-# SIMPLE SAFE CSS
+# SAFE DARK THEME
 # =====================================================
 
 st.markdown("""
@@ -25,13 +25,13 @@ st.markdown("""
     background-color: #0b1120;
 }
 
-/* MAIN TITLES */
+/* TITLES */
 
 h1, h2, h3 {
     color: white !important;
 }
 
-/* NORMAL TEXT */
+/* TEXT */
 
 p, label, div {
     color: #e5e7eb;
@@ -53,7 +53,7 @@ section[data-testid="stSidebar"] {
     font-weight: bold;
 }
 
-/* METRICS */
+/* METRIC CARDS */
 
 [data-testid="metric-container"] {
     background-color: #1f2937;
@@ -70,6 +70,10 @@ section[data-testid="stSidebar"] {
 # =====================================================
 
 df = pd.read_csv("data/processed_data.csv")
+
+# CREATE STUDENT IDS 1 TO N
+
+df["Student_ID"] = range(1, len(df) + 1)
 
 # =====================================================
 # SIDEBAR
@@ -184,27 +188,25 @@ if page == "Dashboard":
 
     st.divider()
 
-# =====================================================
-# STUDENT SEARCH
-# =====================================================
+    # =====================================================
+    # STUDENT SEARCH
+    # =====================================================
 
-st.subheader("🔍 Student Details")
+    st.subheader("🔍 Student Details")
 
-# CREATE STUDENT IDs FROM 1 TO 10
+    selected_student = st.selectbox(
+        "Select Student",
+        df["Student_ID"]
+    )
 
-df["Student_ID"] = range(1, len(df) + 1)
+    student_data = df[
+        df["Student_ID"] == selected_student
+    ]
 
-selected_student = st.selectbox(
-    "Select Student",
-    df["Student_ID"]
-)
+    st.dataframe(student_data)
 
-student_data = df[
-    df["Student_ID"] == selected_student
-]
+    st.divider()
 
-st.dataframe(student_data)
- 
     # =====================================================
     # EARLY WARNING ALERTS
     # =====================================================
@@ -333,3 +335,4 @@ st.markdown("---")
 st.markdown(
     "### 🎓 Built using Streamlit + Python"
 )
+

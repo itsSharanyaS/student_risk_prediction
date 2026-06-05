@@ -13,175 +13,53 @@ st.set_page_config(
 )
 
 # =====================================================
-# HIDE STREAMLIT DEFAULT MENU
-# =====================================================
-
-st.markdown("""
-<style>
-#MainMenu {visibility: hidden;}
-footer {visibility: hidden;}
-header {visibility: hidden;}
-</style>
-""", unsafe_allow_html=True)
-
-# =====================================================
-# PROFESSIONAL DARK THEME CSS
+# SIMPLE SAFE CSS
 # =====================================================
 
 st.markdown("""
 <style>
 
-/* MAIN APP */
+/* APP BACKGROUND */
 
 .stApp {
-    background-color: #111827;
-    font-family: 'Segoe UI', sans-serif;
+    background-color: #0b1120;
 }
 
-/* TITLES */
+/* MAIN TITLES */
 
-h1 {
-    color: #ffffff !important;
-    font-size: 42px !important;
-    font-weight: 800 !important;
-}
-
-h2, h3 {
-    color: #f3f4f6 !important;
+h1, h2, h3 {
+    color: white !important;
 }
 
 /* NORMAL TEXT */
 
-p {
-    color: #d1d5db;
-    font-size: 18px;
+p, label, div {
+    color: #e5e7eb;
 }
 
 /* SIDEBAR */
 
 section[data-testid="stSidebar"] {
-    background-color: #0f172a;
-}
-
-/* SIDEBAR TEXT */
-
-section[data-testid="stSidebar"] * {
-    color: white !important;
-}
-
-/* METRIC CARDS */
-
-[data-testid="metric-container"] {
-
-    background-color: #1f2937;
-
-    border: 1px solid #374151;
-
-    padding: 18px;
-
-    border-radius: 18px;
-
-    box-shadow:
-        0px 4px 12px rgba(0,0,0,0.25);
+    background-color: #111827;
 }
 
 /* BUTTONS */
 
-.stButton > button {
-
+.stButton button {
     background-color: #2563eb;
-
     color: white;
-
     border-radius: 10px;
-
     border: none;
-
-    font-weight: 600;
-
-    height: 3em;
-
-    width: 100%;
+    font-weight: bold;
 }
 
-/* BUTTON HOVER */
+/* METRICS */
 
-.stButton > button:hover {
-
-    background-color: #1d4ed8;
-
-    color: white;
-}
-
-/* DOWNLOAD BUTTON */
-
-.stDownloadButton > button {
-
-    background-color: #16a34a;
-
-    color: white;
-
-    border-radius: 10px;
-
-    border: none;
-
-    height: 3em;
-
-    width: 100%;
-}
-
-/* ALERT BOX */
-
-.alert-box {
-
+[data-testid="metric-container"] {
+    background-color: #1f2937;
+    border: 1px solid #374151;
     padding: 15px;
-
-    border-radius: 12px;
-
-    background-color: rgba(239,68,68,0.15);
-
-    border-left: 5px solid #ef4444;
-
-    margin-bottom: 10px;
-
-    color: white;
-}
-
-/* RECOMMENDATION BOX */
-
-.recommend-box {
-
-    background-color: rgba(37,99,235,0.15);
-
-    padding: 15px;
-
-    border-radius: 12px;
-
-    border-left: 5px solid #2563eb;
-
-    color: white;
-}
-
-/* DATAFRAME */
-
-[data-testid="stDataFrame"] {
-
-    border-radius: 12px;
-
-    overflow: hidden;
-}
-
-/* FOOTER */
-
-.footer {
-
-    text-align: center;
-
-    color: #9ca3af;
-
-    padding: 20px;
-
-    font-size: 14px;
+    border-radius: 15px;
 }
 
 </style>
@@ -197,22 +75,20 @@ df = pd.read_csv("data/processed_data.csv")
 # SIDEBAR
 # =====================================================
 
-st.sidebar.title("🎓 Student Analytics")
-
-st.sidebar.success("AI-Powered Academic Monitoring")
+st.sidebar.title("🎓 Navigation")
 
 page = st.sidebar.radio(
-    "Navigation",
+    "Go To",
     [
         "Dashboard",
         "Prediction",
         "Analytics",
-        "About Project"
+        "About"
     ]
 )
 
 # =====================================================
-# DASHBOARD PAGE
+# DASHBOARD
 # =====================================================
 
 if page == "Dashboard":
@@ -222,20 +98,20 @@ if page == "Dashboard":
     )
 
     st.success(
-        "AI-powered dashboard for monitoring student academic performance."
+        "AI-powered dashboard for monitoring student performance."
     )
 
     st.write(
         """
-        Educational analytics platform designed to identify
-        academically at-risk students and provide intervention support.
+        Educational analytics platform for identifying
+        academically at-risk students.
         """
     )
 
     st.divider()
 
     # =====================================================
-    # KPI DASHBOARD
+    # KPI CARDS
     # =====================================================
 
     st.subheader("📊 Dashboard Overview")
@@ -244,13 +120,13 @@ if page == "Dashboard":
 
     with col1:
         st.metric(
-            "👨‍🎓 Total Students",
+            "Total Students",
             len(df)
         )
 
     with col2:
         st.metric(
-            "📈 Average Score",
+            "Average Score",
             round(df["Final_Exam_Score"].mean(), 2)
         )
 
@@ -265,7 +141,7 @@ if page == "Dashboard":
         )
 
         st.metric(
-            "✅ Pass Percentage",
+            "Pass %",
             f"{pass_percent}%"
         )
 
@@ -276,37 +152,35 @@ if page == "Dashboard":
         )
 
         st.metric(
-            "🚨 High Risk Students",
+            "High Risk",
             high_risk
         )
 
     st.divider()
 
     # =====================================================
-    # CHARTS SECTION
+    # CHARTS
     # =====================================================
 
-    st.subheader("📈 Student Performance Analytics")
+    st.subheader("📈 Performance Analytics")
 
     col1, col2 = st.columns(2)
 
     with col1:
 
-        st.write("### Final Exam Score Distribution")
+        st.write("### Final Exam Scores")
 
-        chart_data = pd.DataFrame({
-            "Final Score": df["Final_Exam_Score"]
-        })
-
-        st.bar_chart(chart_data)
+        st.bar_chart(
+            df["Final_Exam_Score"]
+        )
 
     with col2:
 
-        st.write("### Pass vs Fail Analysis")
+        st.write("### Pass vs Fail")
 
-        pass_fail = df["Pass_Fail"].value_counts()
-
-        st.bar_chart(pass_fail)
+        st.bar_chart(
+            df["Pass_Fail"].value_counts()
+        )
 
     st.divider()
 
@@ -314,10 +188,10 @@ if page == "Dashboard":
     # STUDENT SEARCH
     # =====================================================
 
-    st.subheader("🔍 Student Search & Details")
+    st.subheader("🔍 Student Details")
 
     selected_student = st.selectbox(
-        "Select Student ID",
+        "Select Student",
         df["Student_ID"]
     )
 
@@ -326,15 +200,6 @@ if page == "Dashboard":
     ]
 
     st.dataframe(student_data)
-
-    csv = student_data.to_csv(index=False).encode("utf-8")
-
-    st.download_button(
-        "⬇ Download Student Report",
-        data=csv,
-        file_name="student_report.csv",
-        mime="text/csv"
-    )
 
     st.divider()
 
@@ -350,63 +215,32 @@ if page == "Dashboard":
 
     if len(risk_students) > 0:
 
-        for index, row in risk_students.iterrows():
+        st.error(
+            f"{len(risk_students)} students are at HIGH RISK"
+        )
 
-            st.markdown(f"""
-            <div class="alert-box">
-
-            ⚠ Student <b>{row['Student_ID']}</b>
-            is academically at HIGH RISK.
-
-            </div>
-            """, unsafe_allow_html=True)
+        st.dataframe(risk_students)
 
     else:
 
         st.success(
-            "✅ No high-risk students detected."
+            "No high-risk students detected"
         )
 
     st.divider()
 
     # =====================================================
-    # TOP & LOW PERFORMERS
+    # TOP STUDENTS
     # =====================================================
 
-    st.subheader("🏆 Student Performance Insights")
+    st.subheader("🏆 Top Performing Students")
 
-    col1, col2 = st.columns(2)
+    top_students = df.sort_values(
+        by="Final_Exam_Score",
+        ascending=False
+    ).head(5)
 
-    with col1:
-
-        st.success("🏅 Top Performing Students")
-
-        top_students = df.sort_values(
-            by="Final_Exam_Score",
-            ascending=False
-        ).head(5)
-
-        st.dataframe(top_students)
-
-    with col2:
-
-        st.error("⚠ Students Needing Attention")
-
-        low_students = df.sort_values(
-            by="Final_Exam_Score"
-        ).head(5)
-
-        st.dataframe(low_students)
-
-    st.divider()
-
-    # =====================================================
-    # DATASET PREVIEW
-    # =====================================================
-
-    st.subheader("📄 Dataset Preview")
-
-    st.dataframe(df.head())
+    st.dataframe(top_students)
 
 # =====================================================
 # PREDICTION PAGE
@@ -414,104 +248,35 @@ if page == "Dashboard":
 
 elif page == "Prediction":
 
-    st.title("🎯 Student Risk Prediction")
-
-    st.write(
-        """
-        Predict student academic risk level using academic indicators.
-        """
-    )
-
-    st.divider()
+    st.title("🎯 Risk Prediction")
 
     attendance = st.slider(
-        "Attendance (%)",
+        "Attendance %",
         0,
         100,
         75
     )
 
-    study_hours = st.slider(
-        "Study Hours Per Day",
-        0,
-        15,
-        5
-    )
-
-    assignment_score = st.slider(
-        "Assignment Score",
-        0,
-        100,
-        70
-    )
-
-    midterm_score = st.slider(
-        "Midterm Score",
-        0,
-        100,
-        70
-    )
-
-    final_exam_score = st.slider(
+    final_score = st.slider(
         "Final Exam Score",
         0,
         100,
         70
     )
 
-    st.divider()
-
     if st.button("Predict Risk"):
 
-        st.subheader("📊 Prediction Result")
-
-        if final_exam_score < 50 or attendance < 40:
+        if final_score < 50 or attendance < 40:
 
             st.error("🔴 HIGH RISK")
 
-            st.markdown("""
-            <div class="recommend-box">
-
-            <h4>📌 Recommendations</h4>
-
-            • Attend remedial classes<br>
-            • Increase study hours<br>
-            • Improve attendance<br>
-            • Meet mentors weekly
-
-            </div>
-            """, unsafe_allow_html=True)
-
-        elif final_exam_score < 75:
+        elif final_score < 75:
 
             st.warning("🟡 MEDIUM RISK")
-
-            st.markdown("""
-            <div class="recommend-box">
-
-            <h4>📌 Recommendations</h4>
-
-            • Practice mock tests<br>
-            • Improve revision<br>
-            • Complete assignments
-
-            </div>
-            """, unsafe_allow_html=True)
 
         else:
 
             st.success("🟢 LOW RISK")
-
-            st.markdown("""
-            <div class="recommend-box">
-
-            <h4>📌 Recommendations</h4>
-
-            • Maintain performance<br>
-            • Continue study habits
-
-            </div>
-            """, unsafe_allow_html=True)
 
 # =====================================================
 # ANALYTICS PAGE
@@ -519,19 +284,15 @@ elif page == "Prediction":
 
 elif page == "Analytics":
 
-    st.title("📊 Advanced Analytics Dashboard")
+    st.title("📊 Analytics")
 
-    st.subheader("📈 Final Exam Score Trend")
+    st.subheader("Final Score Trend")
 
-    st.line_chart(df["Final_Exam_Score"])
-
-    st.subheader("📊 Pass vs Fail Analysis")
-
-    st.bar_chart(
-        df["Pass_Fail"].value_counts()
+    st.line_chart(
+        df["Final_Exam_Score"]
     )
 
-    st.subheader("📄 Dataset")
+    st.subheader("Dataset Preview")
 
     st.dataframe(df)
 
@@ -539,40 +300,25 @@ elif page == "Analytics":
 # ABOUT PAGE
 # =====================================================
 
-elif page == "About Project":
+elif page == "About":
 
     st.title("📘 About Project")
 
     st.write("""
 
-    ## Student Performance Risk Prediction & Early Warning System
+    ### Student Performance Risk Prediction & Early Warning System
 
-    AI-powered educational analytics platform for identifying
-    academically at-risk students.
-
-    ### Features
+    Features:
 
     ✅ Student Risk Prediction
 
+    ✅ Dashboard Analytics
+
     ✅ Early Warning Alerts
 
-    ✅ Interactive Dashboard
-
-    ✅ Educational Analytics
+    ✅ Interactive Charts
 
     ✅ Student Monitoring
-
-    ✅ Downloadable Reports
-
-    ### Technologies Used
-
-    • Python
-
-    • Streamlit
-
-    • Pandas
-
-    • Machine Learning
 
     """)
 
@@ -580,15 +326,8 @@ elif page == "About Project":
 # FOOTER
 # =====================================================
 
-st.markdown("""
-<div class="footer">
+st.markdown("---")
 
-🎓 Student Performance Risk Prediction & Early Warning System
-
-<br><br>
-
-Built with Streamlit | Python | Machine Learning
-
-</div>
-""", unsafe_allow_html=True)
-
+st.markdown(
+    "### 🎓 Built using Streamlit + Python"
+)

@@ -156,60 +156,29 @@ if page == "Home":
 
     st.divider()
 
-    # =====================================================
-    # QUICK STATS
-    # =====================================================
+# =====================================================
+# QUICK STATS
+# =====================================================
 
-    st.subheader("📈 Quick Statistics")
+st.subheader("📈 Quick Statistics")
 
-    col1, col2, col3, col4 = st.columns(4)
+# CALCULATE PASS PERCENTAGE USING FINAL SCORE
 
-    with col1:
+pass_count = len(
+    df[df["Final_Exam_Score"] >= 50]
+)
 
-        st.metric(
-            "Students",
-            len(df)
-        )
+pass_percent = round(
+    (pass_count / len(df)) * 100,
+    2
+)
 
-    with col2:
+high_risk = len(
+    df[df["Final_Exam_Score"] < 50]
+)
 
-        st.metric(
-            "Average Score",
-            round(df["Final_Exam_Score"].mean(), 2)
-        )
-
-    with col3:
-
-        pass_percent = round(
-            (
-                len(df[df["Pass_Fail"] == "Pass"])
-                / len(df)
-            ) * 100,
-            2
-        )
-
-        st.metric(
-            "Pass %",
-            f"{pass_percent}%"
-        )
-
-    with col4:
-
-        high_risk = len(
-            df[df["Final_Exam_Score"] < 50]
-        )
-
-        st.metric(
-            "High Risk",
-            high_risk
-        )
-
-    st.divider()
-
-    st.success(
-        "🚀 Use the sidebar to explore Dashboard, Prediction, and Analytics."
-    )
-
+col1, col2, col3, col4 = st.columns(4)
+  
 # =====================================================
 # DASHBOARD PAGE
 # =====================================================

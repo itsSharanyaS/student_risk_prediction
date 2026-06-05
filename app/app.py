@@ -6,7 +6,7 @@ import pandas as pd
 # =====================================================
 
 st.set_page_config(
-    page_title="Student Analytics System",
+    page_title="Student Risk Prediction System",
     page_icon="🎓",
     layout="wide"
 )
@@ -24,7 +24,7 @@ header {visibility: hidden;}
 """, unsafe_allow_html=True)
 
 # =====================================================
-# PROFESSIONAL SKY BLUE UI CSS
+# PROFESSIONAL LIGHT THEME CSS
 # =====================================================
 
 st.markdown("""
@@ -36,14 +36,7 @@ MAIN BACKGROUND
 
 .stApp {
 
-    background:
-        linear-gradient(
-            180deg,
-            #eaf4ff 0%,
-            #f4f9ff 100%
-        );
-
-    color: #1f2937;
+    background-color: #f5f7fa;
 
     font-family: 'Segoe UI', sans-serif;
 }
@@ -63,14 +56,14 @@ h1 {
 
 h2 {
 
-    color: #1e3a8a !important;
+    color: #1e293b !important;
 
     font-weight: 700 !important;
 }
 
 h3 {
 
-    color: #2563eb !important;
+    color: #334155 !important;
 
     font-weight: 700 !important;
 }
@@ -79,8 +72,12 @@ h3 {
 TEXT
 ===================================================== */
 
-p, label, div {
-    color: #1f2937;
+p {
+    color: #374151;
+}
+
+label {
+    color: #111827 !important;
 }
 
 /* =====================================================
@@ -89,18 +86,16 @@ SIDEBAR
 
 section[data-testid="stSidebar"] {
 
-    background:
-        linear-gradient(
-            180deg,
-            #0f172a,
-            #1e3a8a
-        );
+    background-color: #ffffff;
+
+    border-right: 1px solid #e5e7eb;
 }
 
 /* Sidebar text */
 
 section[data-testid="stSidebar"] * {
-    color: white !important;
+
+    color: #111827 !important;
 }
 
 /* =====================================================
@@ -115,10 +110,10 @@ METRIC CARDS
 
     padding: 18px;
 
-    border: 1px solid #dbe4f0;
+    border: 1px solid #e5e7eb;
 
     box-shadow:
-        0px 4px 12px rgba(0,0,0,0.06);
+        0px 4px 12px rgba(0,0,0,0.05);
 }
 
 /* =====================================================
@@ -127,12 +122,7 @@ BUTTONS
 
 .stButton > button {
 
-    background:
-        linear-gradient(
-            to right,
-            #2563eb,
-            #1d4ed8
-        );
+    background-color: #2563eb;
 
     color: white;
 
@@ -153,12 +143,7 @@ BUTTONS
 
 .stButton > button:hover {
 
-    background:
-        linear-gradient(
-            to right,
-            #1d4ed8,
-            #1e40af
-        );
+    background-color: #1d4ed8;
 
     color: white;
 }
@@ -169,12 +154,7 @@ DOWNLOAD BUTTON
 
 .stDownloadButton > button {
 
-    background:
-        linear-gradient(
-            to right,
-            #15803d,
-            #16a34a
-        );
+    background-color: #16a34a;
 
     color: white;
 
@@ -197,21 +177,15 @@ SUCCESS / WARNING / ERROR
 
 .stSuccess {
 
-    background-color: #dcfce7 !important;
-
     border-radius: 14px;
 }
 
 .stWarning {
 
-    background-color: #fef3c7 !important;
-
     border-radius: 14px;
 }
 
 .stError {
-
-    background-color: #fee2e2 !important;
 
     border-radius: 14px;
 }
@@ -226,15 +200,7 @@ DATAFRAME
 
     overflow: hidden;
 
-    border: 1px solid #dbe4f0;
-}
-
-/* =====================================================
-DIVIDER
-===================================================== */
-
-hr {
-    border: 1px solid #dbe4f0;
+    border: 1px solid #e5e7eb;
 }
 
 /* =====================================================
@@ -247,14 +213,11 @@ ALERT BOX
 
     border-radius: 12px;
 
-    background-color: #fff4f4;
+    background-color: #fff1f2;
 
-    border-left: 6px solid red;
+    border-left: 6px solid #ef4444;
 
     margin-bottom: 10px;
-
-    box-shadow:
-        0px 2px 8px rgba(0,0,0,0.05);
 }
 
 /* =====================================================
@@ -263,13 +226,13 @@ RECOMMENDATION BOX
 
 .recommend-box {
 
-    background-color: #eef7ff;
+    background-color: #eff6ff;
 
     padding: 15px;
 
     border-radius: 12px;
 
-    border-left: 5px solid #1976d2;
+    border-left: 5px solid #2563eb;
 }
 
 /* =====================================================
@@ -300,15 +263,10 @@ df = pd.read_csv("data/processed_data.csv")
 # SIDEBAR
 # =====================================================
 
-st.sidebar.image(
-    "https://cdn-icons-png.flaticon.com/512/3135/3135755.png",
-    width=120
-)
-
-st.sidebar.markdown("## 🎓 Student Analytics System")
+st.sidebar.title("🎓 Student Analytics")
 
 st.sidebar.success(
-    "AI-Powered Academic Monitoring Platform"
+    "AI-Powered Academic Monitoring"
 )
 
 page = st.sidebar.radio(
@@ -322,7 +280,7 @@ page = st.sidebar.radio(
 )
 
 # =====================================================
-# DASHBOARD PAGE
+# DASHBOARD
 # =====================================================
 
 if page == "Dashboard":
@@ -332,21 +290,19 @@ if page == "Dashboard":
     )
 
     st.success(
-        "🚀 AI-powered dashboard for monitoring student academic performance and risk levels."
+        "AI-powered dashboard for monitoring student academic performance and risk levels."
     )
 
     st.write(
         """
-        AI-powered educational analytics platform designed to identify
-        academically at-risk students and provide early intervention support.
+        Educational analytics platform designed to identify
+        academically at-risk students and provide early intervention.
         """
     )
 
     st.divider()
 
-    # =====================================================
     # KPI CARDS
-    # =====================================================
 
     st.subheader("📊 Key Performance Indicators")
 
@@ -392,9 +348,7 @@ if page == "Dashboard":
 
     st.divider()
 
-    # =====================================================
-    # STUDENT SEARCH
-    # =====================================================
+    # SEARCH + ALERTS
 
     col1, col2 = st.columns([2, 1])
 
@@ -439,8 +393,6 @@ if page == "Dashboard":
                 <div class="alert-box">
                 ⚠ <b>Student {row['Student_ID']}</b>
                 is academically at HIGH RISK.
-                <br><br>
-                Immediate academic intervention recommended.
                 </div>
                 """, unsafe_allow_html=True)
 
@@ -452,9 +404,7 @@ if page == "Dashboard":
 
     st.divider()
 
-    # =====================================================
-    # PERFORMANCE CHARTS
-    # =====================================================
+    # CHARTS
 
     st.subheader("📈 Performance Overview")
 
@@ -476,11 +426,9 @@ if page == "Dashboard":
 
     st.divider()
 
-    # =====================================================
     # TOP & LOW PERFORMERS
-    # =====================================================
 
-    st.subheader("🏆 Top & Low Performing Students")
+    st.subheader("🏆 Student Performance")
 
     col1, col2 = st.columns(2)
 
@@ -506,10 +454,6 @@ if page == "Dashboard":
         st.dataframe(low_students)
 
     st.divider()
-
-    # =====================================================
-    # DATASET PREVIEW
-    # =====================================================
 
     st.subheader("📄 Dataset Preview")
 
@@ -578,13 +522,14 @@ elif page == "Prediction":
 
             st.markdown("""
             <div class="recommend-box">
+
             <h4>📌 Recommendations</h4>
 
             • Attend remedial coaching classes<br>
             • Increase study hours daily<br>
             • Improve attendance consistency<br>
-            • Weekly mentor monitoring<br>
-            • Submit pending assignments
+            • Meet academic mentors weekly
+
             </div>
             """, unsafe_allow_html=True)
 
@@ -594,12 +539,13 @@ elif page == "Prediction":
 
             st.markdown("""
             <div class="recommend-box">
+
             <h4>📌 Recommendations</h4>
 
             • Practice mock tests<br>
-            • Improve subject revision<br>
-            • Increase classroom participation<br>
-            • Strengthen assignment performance
+            • Improve revision strategy<br>
+            • Increase assignment completion
+
             </div>
             """, unsafe_allow_html=True)
 
@@ -609,11 +555,12 @@ elif page == "Prediction":
 
             st.markdown("""
             <div class="recommend-box">
+
             <h4>📌 Recommendations</h4>
 
             • Maintain current performance<br>
-            • Participate in advanced learning<br>
             • Continue consistent study habits
+
             </div>
             """, unsafe_allow_html=True)
 
@@ -623,17 +570,9 @@ elif page == "Prediction":
 
 elif page == "Analytics":
 
-    st.title("📊 Advanced Student Analytics Dashboard")
+    st.title("📊 Advanced Analytics Dashboard")
 
-    st.write(
-        """
-        Interactive educational analytics and institutional insights.
-        """
-    )
-
-    st.divider()
-
-    st.subheader("📈 Student Performance Analytics")
+    st.subheader("📈 Final Exam Score Trend")
 
     st.line_chart(df["Final_Exam_Score"])
 
@@ -643,7 +582,7 @@ elif page == "Analytics":
 
         st.area_chart(df["Attendance (%)"])
 
-    st.subheader("📌 Dataset Preview")
+    st.subheader("📄 Dataset")
 
     st.dataframe(df)
 
@@ -656,10 +595,11 @@ elif page == "About Project":
     st.title("📘 About Project")
 
     st.write("""
+
     ## Student Performance Risk Prediction & Early Warning System
 
-    This AI-powered educational analytics platform helps schools
-    and colleges identify academically at-risk students.
+    This project helps educational institutions identify
+    academically at-risk students using AI and analytics.
 
     ### Features
 
@@ -667,15 +607,13 @@ elif page == "About Project":
 
     ✅ Early Warning Alerts
 
-    ✅ Interactive Dashboard
+    ✅ Educational Analytics Dashboard
 
-    ✅ Analytics & Visualizations
+    ✅ Interactive Visualizations
 
     ✅ Personalized Recommendations
 
-    ✅ Student Monitoring System
-
-    ✅ Downloadable Reports
+    ✅ Downloadable Student Reports
 
     ### Technologies Used
 
@@ -685,9 +623,10 @@ elif page == "About Project":
 
     • Pandas
 
+    • Data Analytics
+
     • Machine Learning
 
-    • Educational Data Analytics
     """)
 
 # =====================================================
@@ -696,7 +635,13 @@ elif page == "About Project":
 
 st.markdown("""
 <div class="footer">
-🎓 Student Performance Risk Prediction & Early Warning System <br>
-Built with Streamlit | Python | Machine Learning | Data Analytics
+
+🎓 Student Performance Risk Prediction & Early Warning System
+
+<br><br>
+
+Built with Streamlit | Python | Machine Learning
+
 </div>
 """, unsafe_allow_html=True)
+

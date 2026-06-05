@@ -62,33 +62,28 @@ if page == "Dashboard":
 
     st.dataframe(student_data)
 
-    # Performance Insights
-    st.write("### Performance Insights")
+    ```python
+# Safe Performance Insights
 
-    st.write(
-        "📌 Final Exam Score:",
-        int(student_data["Final_Exam_Score"].values[0])
-    )
-
+if "Assignment_Score" in df.columns:
     st.write(
         "📌 Assignment Score:",
         int(student_data["Assignment_Score"].values[0])
     )
 
+if "Midterm_Score" in df.columns:
     st.write(
         "📌 Midterm Score:",
         int(student_data["Midterm_Score"].values[0])
     )
 
+if "Attendance (%)" in df.columns:
     st.write(
         "📌 Attendance:",
         int(student_data["Attendance (%)"].values[0])
     )
+```
 
-    st.write(
-        "📌 Pass/Fail Status:",
-        student_data["Pass_Fail"].values[0]
-    )
 
     # Dataset Preview
     st.subheader("📄 Dataset Preview")

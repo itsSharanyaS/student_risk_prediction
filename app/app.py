@@ -1,5 +1,6 @@
 import streamlit as st
 import pandas as pd
+import os
 
 # =====================================================
 # PAGE CONFIG
@@ -12,25 +13,13 @@ st.set_page_config(
 )
 
 # =====================================================
-# HIDE STREAMLIT DEFAULT MENU
-# =====================================================
-
-st.markdown("""
-<style>
-#MainMenu {visibility: hidden;}
-footer {visibility: hidden;}
-header {visibility: hidden;}
-</style>
-""", unsafe_allow_html=True)
-
-# =====================================================
-# PROFESSIONAL DARK THEME CSS
+# SAFE CSS
 # =====================================================
 
 st.markdown("""
 <style>
 
-/* MAIN BACKGROUND */
+/* MAIN APP */
 
 .stApp {
     background-color: #0f172a;
@@ -40,188 +29,139 @@ st.markdown("""
 
 /* HEADINGS */
 
-h1 {
-    color: #ffffff !important;
-    font-size: 42px !important;
-    font-weight: 800 !important;
-}
-
-h2 {
-    color: #e2e8f0 !important;
-    font-weight: 700 !important;
-}
-
-h3 {
-    color: #cbd5e1 !important;
-    font-weight: 700 !important;
-}
-
-/* TEXT */
-
-p {
-    color: #e2e8f0;
-}
-
-label {
+h1, h2, h3, h4 {
     color: white !important;
 }
 
 /* SIDEBAR */
 
 section[data-testid="stSidebar"] {
-    background: linear-gradient(
-        180deg,
-        #020617,
-        #0f172a
-    );
-    border-right: 1px solid #334155;
+    background: #020617;
 }
-
-/* Sidebar Text */
 
 section[data-testid="stSidebar"] * {
     color: white !important;
 }
 
-/* METRIC CARDS */
+/* METRICS */
 
 [data-testid="metric-container"] {
-
-    background-color: #1e293b;
-
-    border-radius: 18px;
-
-    padding: 18px;
-
+    background: #1e293b;
+    border-radius: 15px;
+    padding: 15px;
     border: 1px solid #334155;
-
-    box-shadow:
-        0px 4px 12px rgba(0,0,0,0.35);
 }
 
 /* BUTTONS */
 
 .stButton > button {
-
-    background: linear-gradient(
-        to right,
-        #2563eb,
-        #1d4ed8
-    );
-
-    color: white;
-
-    border-radius: 12px;
-
-    border: none;
-
-    height: 3.2em;
-
     width: 100%;
-
-    font-size: 16px;
-
-    font-weight: 600;
-}
-
-/* BUTTON HOVER */
-
-.stButton > button:hover {
-
-    background: linear-gradient(
-        to right,
-        #1d4ed8,
-        #1e40af
-    );
-
+    border-radius: 10px;
+    background: #2563eb;
     color: white;
+    border: none;
+    height: 3em;
+    font-weight: bold;
 }
-
-/* DOWNLOAD BUTTON */
 
 .stDownloadButton > button {
-
-    background: linear-gradient(
-        to right,
-        #16a34a,
-        #15803d
-    );
-
-    color: white;
-
-    border-radius: 12px;
-
-    border: none;
-
-    height: 3.2em;
-
     width: 100%;
-
-    font-size: 16px;
-
-    font-weight: 600;
+    border-radius: 10px;
+    background: #16a34a;
+    color: white;
+    border: none;
+    height: 3em;
+    font-weight: bold;
 }
 
 /* ALERT BOX */
 
 .alert-box {
-
-    padding: 15px;
-
-    border-radius: 12px;
-
     background-color: rgba(239,68,68,0.15);
-
-    border-left: 6px solid #ef4444;
-
+    padding: 15px;
+    border-left: 5px solid red;
+    border-radius: 10px;
     margin-bottom: 10px;
 }
 
-/* RECOMMENDATION BOX */
+/* RECOMMEND BOX */
 
 .recommend-box {
-
     background-color: rgba(37,99,235,0.15);
-
     padding: 15px;
-
-    border-radius: 12px;
-
     border-left: 5px solid #2563eb;
-}
-
-/* DATAFRAME */
-
-[data-testid="stDataFrame"] {
-
-    border-radius: 14px;
-
-    overflow: hidden;
-
-    border: 1px solid #334155;
+    border-radius: 10px;
 }
 
 /* FOOTER */
 
 .footer {
-
     text-align: center;
-
     color: #94a3b8;
-
-    padding: 20px;
-
-    font-size: 14px;
+    margin-top: 30px;
 }
 
 </style>
 """, unsafe_allow_html=True)
 
 # =====================================================
-# LOAD DATA
+# LOAD DATA SAFELY
 # =====================================================
 
-df = pd.read_csv("data/processed_data.csv")
+DATA_PATH = "data/processed_data.csv"
+
+try:
+
+    if not os.path.exists(DATA_PATH):
+
+        st.error(f"""
+        ❌ Dataset not found.
+
+        Expected file location:
+        {DATA_PATH}
+
+        Make sure:
+        1. data folder exists
+        2. processed_data.csv exists
+        3. file is uploaded to GitHub
+        """)
+
+        st.stop()
+
+    df = pd.read_csv(DATA_PATH)
+
+except Exception as e:
+
+    st.error(f"❌ Error loading dataset: {e}")
+    st.stop()
+
+# =====================================================
+# CHECK REQUIRED COLUMNS
+# =====================================================
+
+required_columns = [
+    "Student_ID",
+    "Final_Exam_Score",
+    "Pass_Fail"
+]
+
+missing_columns = [
+    col for col in required_columns
+    if col not in df.columns
+]
+
+if len(missing_columns) > 0:
+
+    st.error(f"""
+    ❌ Missing columns in CSV:
+
+    {missing_columns}
+
+    Available columns:
+    {list(df.columns)}
+    """)
+
+    st.stop()
 
 # =====================================================
 # SIDEBAR
@@ -244,7 +184,7 @@ page = st.sidebar.radio(
 )
 
 # =====================================================
-# DASHBOARD PAGE
+# DASHBOARD
 # =====================================================
 
 if page == "Dashboard":
@@ -257,16 +197,16 @@ if page == "Dashboard":
         "AI-powered dashboard for monitoring student academic performance."
     )
 
-    st.write(
-        """
-        Educational analytics platform designed to identify
-        academically at-risk students and provide intervention support.
-        """
-    )
+    st.write("""
+    Educational analytics platform designed to identify
+    academically at-risk students.
+    """)
 
     st.divider()
 
+    # =================================================
     # KPI CARDS
+    # =================================================
 
     st.subheader("📊 Key Performance Indicators")
 
@@ -312,9 +252,11 @@ if page == "Dashboard":
 
     st.divider()
 
-    # SEARCH + ALERTS
+    # =================================================
+    # STUDENT SEARCH
+    # =================================================
 
-    col1, col2 = st.columns([2, 1])
+    col1, col2 = st.columns([2,1])
 
     with col1:
 
@@ -322,16 +264,21 @@ if page == "Dashboard":
 
         selected_student = st.selectbox(
             "Select Student ID",
-            df["Student_ID"]
+            df["Student_ID"].unique()
         )
 
         student_data = df[
             df["Student_ID"] == selected_student
         ]
 
-        st.dataframe(student_data)
+        st.dataframe(
+            student_data,
+            use_container_width=True
+        )
 
-        csv = student_data.to_csv(index=False).encode("utf-8")
+        csv = student_data.to_csv(
+            index=False
+        ).encode("utf-8")
 
         st.download_button(
             "⬇ Download Report",
@@ -350,61 +297,68 @@ if page == "Dashboard":
 
         if len(risk_students) > 0:
 
-            for index, row in risk_students.iterrows():
+            for _, row in risk_students.head(5).iterrows():
 
                 st.markdown(f"""
                 <div class="alert-box">
                 ⚠ <b>{row['Student_ID']}</b>
-                is academically at HIGH RISK.
+                is academically at HIGH RISK
                 </div>
                 """, unsafe_allow_html=True)
 
         else:
 
             st.success(
-                "✅ No high-risk students detected."
+                "✅ No high-risk students"
             )
 
     st.divider()
 
+    # =================================================
     # CHARTS
+    # =================================================
 
-    st.subheader("📈 Performance Overview")
+    st.subheader("📈 Performance Analytics")
 
     col1, col2 = st.columns(2)
 
     with col1:
 
-        st.write("### Final Exam Score Distribution")
+        st.write("### Final Exam Scores")
 
-        st.bar_chart(df["Final_Exam_Score"])
+        chart_data = df["Final_Exam_Score"]
+
+        st.bar_chart(chart_data)
 
     with col2:
 
-        st.write("### Pass vs Fail Analysis")
+        st.write("### Pass vs Fail")
 
-        st.bar_chart(
-            df["Pass_Fail"].value_counts()
-        )
+        pass_fail = df["Pass_Fail"].value_counts()
+
+        st.bar_chart(pass_fail)
 
     st.divider()
 
-    # TOP & LOW STUDENTS
-
-    st.subheader("🏆 Student Performance")
+    # =================================================
+    # TOP / LOW STUDENTS
+    # =================================================
 
     col1, col2 = st.columns(2)
 
     with col1:
 
-        st.success("🏅 Top Performing Students")
+        st.success("🏅 Top Students")
 
         top_students = df.sort_values(
             by="Final_Exam_Score",
             ascending=False
         ).head(5)
 
-        st.dataframe(top_students)
+        st.dataframe(
+            top_students,
+            use_container_width=True
+        )
 
     with col2:
 
@@ -414,7 +368,10 @@ if page == "Dashboard":
             by="Final_Exam_Score"
         ).head(5)
 
-        st.dataframe(low_students)
+        st.dataframe(
+            low_students,
+            use_container_width=True
+        )
 
 # =====================================================
 # PREDICTION PAGE
@@ -423,14 +380,6 @@ if page == "Dashboard":
 elif page == "Prediction":
 
     st.title("🎯 Student Risk Prediction")
-
-    st.write(
-        """
-        Predict student academic risk level.
-        """
-    )
-
-    st.divider()
 
     attendance = st.slider(
         "Attendance (%)",
@@ -467,11 +416,7 @@ elif page == "Prediction":
         70
     )
 
-    st.divider()
-
     if st.button("Predict Risk"):
-
-        st.subheader("📊 Prediction Result")
 
         if final_exam_score < 50 or attendance < 40:
 
@@ -479,8 +424,7 @@ elif page == "Prediction":
 
             st.markdown("""
             <div class="recommend-box">
-
-            <h4>📌 Recommendations</h4>
+            <h4>Recommendations</h4>
 
             • Attend remedial classes<br>
             • Increase study hours<br>
@@ -494,32 +438,9 @@ elif page == "Prediction":
 
             st.warning("🟡 MEDIUM RISK")
 
-            st.markdown("""
-            <div class="recommend-box">
-
-            <h4>📌 Recommendations</h4>
-
-            • Practice mock tests<br>
-            • Improve revision<br>
-            • Complete assignments
-
-            </div>
-            """, unsafe_allow_html=True)
-
         else:
 
             st.success("🟢 LOW RISK")
-
-            st.markdown("""
-            <div class="recommend-box">
-
-            <h4>📌 Recommendations</h4>
-
-            • Maintain performance<br>
-            • Continue study habits
-
-            </div>
-            """, unsafe_allow_html=True)
 
 # =====================================================
 # ANALYTICS PAGE
@@ -527,21 +448,26 @@ elif page == "Prediction":
 
 elif page == "Analytics":
 
-    st.title("📊 Advanced Analytics Dashboard")
+    st.title("📊 Advanced Analytics")
 
-    st.subheader("📈 Final Exam Score Trend")
+    st.subheader("Final Exam Trend")
 
-    st.line_chart(df["Final_Exam_Score"])
+    st.line_chart(
+        df["Final_Exam_Score"]
+    )
 
-    st.subheader("📊 Pass vs Fail")
+    st.subheader("Pass vs Fail")
 
     st.bar_chart(
         df["Pass_Fail"].value_counts()
     )
 
-    st.subheader("📄 Dataset")
+    st.subheader("Dataset Preview")
 
-    st.dataframe(df)
+    st.dataframe(
+        df,
+        use_container_width=True
+    )
 
 # =====================================================
 # ABOUT PAGE
@@ -555,32 +481,25 @@ elif page == "About Project":
 
     ## Student Performance Risk Prediction & Early Warning System
 
-    AI-powered educational analytics platform for identifying
-    academically at-risk students.
+    AI-powered educational analytics platform.
 
     ### Features
 
     ✅ Student Risk Prediction
 
-    ✅ Early Warning Alerts
-
     ✅ Interactive Dashboard
 
     ✅ Educational Analytics
 
-    ✅ Student Monitoring
-
     ✅ Downloadable Reports
 
-    ### Technologies Used
+    ### Technologies
 
     • Python
 
     • Streamlit
 
     • Pandas
-
-    • Machine Learning
 
     """)
 
@@ -595,7 +514,7 @@ st.markdown("""
 
 <br><br>
 
-Built with Streamlit | Python | Machine Learning
+Built with Streamlit + Python
 
 </div>
 """, unsafe_allow_html=True)

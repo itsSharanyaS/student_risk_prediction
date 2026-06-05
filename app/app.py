@@ -147,8 +147,7 @@ st.sidebar.markdown(
     """
     # 🎓 Dashboard Menu
     
-    Navigate through the AI-powered student analytics system.
-    """
+    
 )
 
 st.sidebar.markdown("---")
@@ -156,8 +155,6 @@ st.sidebar.markdown("---")
 st.sidebar.info(
     "AI-powered educational analytics dashboard."
 )
-
-st.sidebar.subheader("📌 Navigation")
 
 # =====================================================
 # SIDEBAR STATS
@@ -199,14 +196,9 @@ if page == "🏠 Home":
     )
 
     st.warning(
-        "Use the LEFT SIDEBAR MENU to access Dashboard, Prediction, Analytics, and About pages."
+        "Use the LEFT SIDEBAR MENU to access more!!"
     )
 
-    st.write(
-        """
-        AI-powered educational analytics platform d
-        """
-    )
 
     st.divider()
 

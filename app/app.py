@@ -595,12 +595,3 @@ elif page == "📘 About":
 
     """)
 
-# =====================================================
-# FOOTER
-# =====================================================
-
-st.markdown("---")
-
-st.markdown(
-    "### Built for the Students and to the Students"
-)

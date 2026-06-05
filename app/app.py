@@ -24,7 +24,7 @@ header {visibility: hidden;}
 """, unsafe_allow_html=True)
 
 # =====================================================
-# PROFESSIONAL DASHBOARD CSS
+# PROFESSIONAL SKY BLUE UI CSS
 # =====================================================
 
 st.markdown("""
@@ -35,8 +35,16 @@ MAIN BACKGROUND
 ===================================================== */
 
 .stApp {
-    background-color: #eef2f7;
+
+    background:
+        linear-gradient(
+            180deg,
+            #eaf4ff 0%,
+            #f4f9ff 100%
+        );
+
     color: #1f2937;
+
     font-family: 'Segoe UI', sans-serif;
 }
 
@@ -45,18 +53,25 @@ HEADINGS
 ===================================================== */
 
 h1 {
+
     color: #0f172a !important;
+
     font-size: 42px !important;
+
     font-weight: 800 !important;
 }
 
 h2 {
+
     color: #1e3a8a !important;
+
     font-weight: 700 !important;
 }
 
 h3 {
+
     color: #2563eb !important;
+
     font-weight: 700 !important;
 }
 
@@ -73,11 +88,13 @@ SIDEBAR
 ===================================================== */
 
 section[data-testid="stSidebar"] {
-    background: linear-gradient(
-        180deg,
-        #0f172a,
-        #1e3a8a
-    );
+
+    background:
+        linear-gradient(
+            180deg,
+            #0f172a,
+            #1e3a8a
+        );
 }
 
 /* Sidebar text */
@@ -110,11 +127,12 @@ BUTTONS
 
 .stButton > button {
 
-    background: linear-gradient(
-        to right,
-        #2563eb,
-        #1d4ed8
-    );
+    background:
+        linear-gradient(
+            to right,
+            #2563eb,
+            #1d4ed8
+        );
 
     color: white;
 
@@ -131,15 +149,16 @@ BUTTONS
     font-weight: 600;
 }
 
-/* Button hover */
+/* Hover */
 
 .stButton > button:hover {
 
-    background: linear-gradient(
-        to right,
-        #1d4ed8,
-        #1e40af
-    );
+    background:
+        linear-gradient(
+            to right,
+            #1d4ed8,
+            #1e40af
+        );
 
     color: white;
 }
@@ -150,11 +169,12 @@ DOWNLOAD BUTTON
 
 .stDownloadButton > button {
 
-    background: linear-gradient(
-        to right,
-        #15803d,
-        #16a34a
-    );
+    background:
+        linear-gradient(
+            to right,
+            #15803d,
+            #16a34a
+        );
 
     color: white;
 
@@ -324,7 +344,9 @@ if page == "Dashboard":
 
     st.divider()
 
+    # =====================================================
     # KPI CARDS
+    # =====================================================
 
     st.subheader("📊 Key Performance Indicators")
 
@@ -370,7 +392,9 @@ if page == "Dashboard":
 
     st.divider()
 
+    # =====================================================
     # STUDENT SEARCH
+    # =====================================================
 
     col1, col2 = st.columns([2, 1])
 
@@ -428,7 +452,9 @@ if page == "Dashboard":
 
     st.divider()
 
+    # =====================================================
     # PERFORMANCE CHARTS
+    # =====================================================
 
     st.subheader("📈 Performance Overview")
 
@@ -450,7 +476,9 @@ if page == "Dashboard":
 
     st.divider()
 
+    # =====================================================
     # TOP & LOW PERFORMERS
+    # =====================================================
 
     st.subheader("🏆 Top & Low Performing Students")
 
@@ -479,7 +507,9 @@ if page == "Dashboard":
 
     st.divider()
 
+    # =====================================================
     # DATASET PREVIEW
+    # =====================================================
 
     st.subheader("📄 Dataset Preview")
 

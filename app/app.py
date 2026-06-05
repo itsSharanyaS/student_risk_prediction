@@ -12,6 +12,41 @@ st.set_page_config(
 )
 
 # =========================
+# CUSTOM CSS
+# =========================
+
+st.markdown("""
+<style>
+
+.main {
+    background-color: #f5f7fa;
+}
+
+h1, h2, h3 {
+    color: #1f4e79;
+}
+
+.stButton>button {
+    background-color: #1f77b4;
+    color: white;
+    border-radius: 10px;
+    height: 3em;
+    width: 100%;
+    font-size: 16px;
+}
+
+.stDownloadButton>button {
+    background-color: green;
+    color: white;
+    border-radius: 10px;
+    height: 3em;
+    width: 100%;
+}
+
+</style>
+""", unsafe_allow_html=True)
+
+# =========================
 # LOAD DATASET
 # =========================
 
@@ -21,7 +56,16 @@ df = pd.read_csv("data/processed_data.csv")
 # SIDEBAR
 # =========================
 
-st.sidebar.title("🎓 Navigation")
+st.sidebar.image(
+    "https://cdn-icons-png.flaticon.com/512/3135/3135755.png",
+    width=120
+)
+
+st.sidebar.title("🎓 Student Analytics System")
+
+st.sidebar.success(
+    "AI-Based Academic Monitoring Platform"
+)
 
 page = st.sidebar.selectbox(
     "Choose Section",
@@ -39,7 +83,13 @@ page = st.sidebar.selectbox(
 
 if page == "Dashboard":
 
-    st.title("🎓 Student Performance Risk Prediction & Early Warning System")
+    st.title(
+        "🎓 Student Performance Risk Prediction & Early Warning System"
+    )
+
+    st.success(
+        "🚀 AI-powered dashboard for monitoring student academic performance and risk levels."
+    )
 
     st.write(
         """
@@ -437,8 +487,26 @@ elif page == "About Project":
 
     • Advanced Analytics Dashboard
 
+    • AI-Based Academic Monitoring
+
     ### Objective
 
     To help schools and colleges take proactive intervention
     measures before academic failure occurs.
     """)
+
+# =========================
+# FOOTER
+# =========================
+
+st.divider()
+
+st.markdown(
+    """
+    <center>
+    <h4>🎓 Student Performance Risk Prediction & Early Warning System</h4>
+    <p>Built using Streamlit, Python, Machine Learning & Educational Analytics</p>
+    </center>
+    """,
+    unsafe_allow_html=True
+)

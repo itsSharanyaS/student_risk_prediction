@@ -157,4 +157,4 @@ elif page == "About Project":
     To help schools and colleges take proactive intervention
     measures before academic failure occurs.
     """)
-```
+

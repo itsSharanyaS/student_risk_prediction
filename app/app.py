@@ -69,6 +69,22 @@ if page == "Dashboard":
 
     student_data = df[df["Student_ID"] == selected_student]
 
+     id="ncb8v4"
+# =========================
+# DOWNLOAD STUDENT REPORT
+# =========================
+
+csv = student_data.to_csv(index=False).encode('utf-8')
+
+st.download_button(
+    label="⬇ Download Student Report",
+    data=csv,
+    file_name="student_report.csv",
+    mime="text/csv"
+)
+
+
+
     st.write("### Student Details")
 
     st.dataframe(student_data)

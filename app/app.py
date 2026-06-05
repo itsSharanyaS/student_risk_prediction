@@ -531,6 +531,6 @@ elif page == "About":
 st.markdown("---")
 
 st.markdown(
-    "### 🎓 Built using Streamlit + Python"
+    "### Built using Streamlit + Python"
 )
 

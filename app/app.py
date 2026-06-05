@@ -44,7 +44,8 @@ p, label, div {
 /* SIDEBAR */
 
 section[data-testid="stSidebar"] {
-    background-color: #111827;
+    background-color: #1e293b;
+    border-right: 2px solid #2563eb;
 }
 
 /* BUTTONS */
@@ -67,6 +68,12 @@ section[data-testid="stSidebar"] {
     border-radius: 15px;
 }
 
+/* HORIZONTAL LINE */
+
+hr {
+    border: 1px solid #374151;
+}
+
 </style>
 """, unsafe_allow_html=True)
 
@@ -76,7 +83,9 @@ section[data-testid="stSidebar"] {
 
 df = pd.read_csv("data/processed_data.csv")
 
+# =====================================================
 # KEEP ONLY 5 STUDENTS
+# =====================================================
 
 df = df.head(5)
 
@@ -127,9 +136,21 @@ df["Risk_Level"] = df["Final_Exam_Score"].apply(
 # SIDEBAR
 # =====================================================
 
-st.sidebar.title("🎓 Navigation")
+st.sidebar.markdown(
+    "# 🎓 Student Risk System"
+)
 
+st.sidebar.markdown("---")
+
+st.sidebar.info(
+    "AI-powered educational analytics dashboard."
+)
+
+st.sidebar.subheader("Navigation Menu")
+
+# =====================================================
 # SIDEBAR STATS
+# =====================================================
 
 st.sidebar.metric(
     "Students",
@@ -141,14 +162,18 @@ st.sidebar.metric(
     len(df[df["Risk_Level"] == "High Risk"])
 )
 
+# =====================================================
+# NAVIGATION
+# =====================================================
+
 page = st.sidebar.radio(
-    "Go To",
+    "Select Page",
     [
-        "Home",
-        "Dashboard",
-        "Prediction",
-        "Analytics",
-        "About"
+        "🏠 Home",
+        "📊 Dashboard",
+        "🎯 Prediction",
+        "📈 Analytics",
+        "📘 About"
     ]
 )
 
@@ -156,7 +181,7 @@ page = st.sidebar.radio(
 # HOME PAGE
 # =====================================================
 
-if page == "Home":
+if page == "🏠 Home":
 
     st.title(
         "🎓 Student Performance Risk Prediction & Early Warning System"
@@ -168,15 +193,6 @@ if page == "Home":
         to identify academically at-risk students and
         provide early intervention support.
         """
-    )
-
-    st.divider()
-
-    # HERO IMAGE
-
-    st.image(
-        "https://images.unsplash.com/photo-1522202176988-66273c2fd55f",
-        use_container_width=True
     )
 
     st.divider()
@@ -271,14 +287,14 @@ if page == "Home":
     st.divider()
 
     st.success(
-        "🚀 Use the sidebar to explore Dashboard, Prediction, and Analytics."
+        "🚀 Navigate using the sidebar menu to explore the dashboard and predictions."
     )
 
 # =====================================================
 # DASHBOARD PAGE
 # =====================================================
 
-elif page == "Dashboard":
+elif page == "📊 Dashboard":
 
     st.title("📊 Student Dashboard")
 
@@ -286,7 +302,11 @@ elif page == "Dashboard":
         f"Last Updated: {datetime.now().strftime('%d %B %Y %H:%M')}"
     )
 
-    st.subheader("Dashboard Overview")
+    st.divider()
+
+    # =====================================================
+    # KPI CARDS
+    # =====================================================
 
     col1, col2, col3, col4 = st.columns(4)
 
@@ -329,6 +349,8 @@ elif page == "Dashboard":
     col1, col2 = st.columns(2)
 
     with col1:
+
+        st.write("### Final Exam Scores")
 
         chart_data = df.set_index("Student_ID")
 
@@ -429,7 +451,9 @@ elif page == "Dashboard":
             risk
         )
 
-    # RISK COLOR
+    # =====================================================
+    # RISK COLOR ALERT
+    # =====================================================
 
     if risk == "High Risk":
 
@@ -470,7 +494,7 @@ elif page == "Dashboard":
     st.divider()
 
     # =====================================================
-    # AI EDUCATIONAL INSIGHTS
+    # AI INSIGHTS
     # =====================================================
 
     st.subheader("🧠 AI Educational Insights")
@@ -514,7 +538,7 @@ elif page == "Dashboard":
 # PREDICTION PAGE
 # =====================================================
 
-elif page == "Prediction":
+elif page == "🎯 Prediction":
 
     st.title("🎯 Student Risk Prediction")
 
@@ -600,7 +624,7 @@ elif page == "Prediction":
 # ANALYTICS PAGE
 # =====================================================
 
-elif page == "Analytics":
+elif page == "📈 Analytics":
 
     st.title("📈 Analytics Dashboard")
 
@@ -635,7 +659,9 @@ elif page == "Analytics":
         use_container_width=True
     )
 
-    # DOWNLOAD BUTTON
+    # =====================================================
+    # DOWNLOAD REPORT
+    # =====================================================
 
     csv = df.to_csv(index=False).encode("utf-8")
 
@@ -650,7 +676,7 @@ elif page == "Analytics":
 # ABOUT PAGE
 # =====================================================
 
-elif page == "About":
+elif page == "📘 About":
 
     st.title("📘 About Project")
 
@@ -670,8 +696,6 @@ elif page == "About":
     ✅ Pandas
 
     ✅ Plotly
-
-    ✅ Machine Learning
 
     ### Key Features
 
@@ -694,6 +718,5 @@ elif page == "About":
     academic outcomes through AI-driven analytics.
 
     """)
-
 
 

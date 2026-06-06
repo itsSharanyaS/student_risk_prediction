@@ -87,7 +87,7 @@ if "logged_in" not in st.session_state:
 
 if not st.session_state.logged_in:
 
-    st.title("🎓 Student Risk Prediction System")
+    st.title("Student Risk Prediction System")
 
     st.subheader("🔐 School Admin Login")
 

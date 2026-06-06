@@ -217,7 +217,7 @@ page = st.sidebar.radio(
 if page == "🏠 Home":
 
     st.title(
-        "🎓 Student Performance Risk Prediction & Early Warning System"
+        "Student Performance Risk Prediction & Early Warning System"
     )
 
     st.write(

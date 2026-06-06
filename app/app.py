@@ -159,7 +159,7 @@ page = st.sidebar.radio(
 if page == "Home":
 
     st.title(
-        "🎓 Student Performance Risk Prediction & Early Warning System"
+        "Student Performance Risk Prediction & Early Warning System"
     )
 
     st.write(
@@ -168,15 +168,6 @@ if page == "Home":
         to identify academically at-risk students and
         provide early intervention support.
         """
-    )
-
-    st.divider()
-
-    # HERO IMAGE
-
-    st.image(
-        "https://images.unsplash.com/photo-1522202176988-66273c2fd55f",
-        use_container_width=True
     )
 
     st.divider()

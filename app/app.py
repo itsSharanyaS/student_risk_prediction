@@ -489,6 +489,72 @@ elif page == "Dashboard":
             "📉 Overall class performance is POOR."
         )
 
+# =====================================================
+# ADVANCED AI INSIGHTS
+# =====================================================
+
+st.divider()
+
+low_attendance_students = df[
+    df[attendance_column] < 60
+]
+
+if len(low_attendance_students) > 0:
+
+    st.warning(
+        f"📌 {len(low_attendance_students)} students have attendance below 60%, increasing academic risk."
+    )
+
+high_risk_students = df[
+    df["Risk_Level"] == "High Risk"
+]
+
+st.error(
+    f"🚨 {len(high_risk_students)} students are currently classified as high-risk."
+)
+
+top_student = df.loc[
+    df["Final_Exam_Score"].idxmax()
+]
+
+st.success(
+    f"🏆 Student {top_student['Student_ID']} is the top performer with score {top_student['Final_Exam_Score']}."
+)
+
+lowest_student = df.loc[
+    df["Final_Exam_Score"].idxmin()
+]
+
+st.warning(
+    f"📉 Student {lowest_student['Student_ID']} requires immediate academic intervention."
+)
+
+correlation = df[attendance_column].corr(
+    df["Final_Exam_Score"]
+)
+
+if correlation > 0.5:
+
+    st.info(
+        "📊 Attendance has a strong positive relationship with academic performance."
+    )
+
+else:
+
+    st.info(
+        "📊 Attendance shows weak correlation with performance."
+    )
+
+average_attendance = round(
+    df[attendance_column].mean(),
+    2
+)
+
+st.info(
+    f"📈 Average class attendance is {average_attendance}%."
+)
+
+
     st.info(
         "📌 Students with low attendance tend to perform poorly."
     )

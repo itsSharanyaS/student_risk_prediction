@@ -231,23 +231,6 @@ if page == "🏠 Home":
     st.divider()
 
     # =====================================================
-    # WHY THIS MATTERS
-    # =====================================================
-
-    st.subheader("Why This Matters")
-
-    st.info(
-        """
-        Many students are identified too late for academic intervention.
-        
-        This system helps institutions detect academic risk early
-        using AI-driven analytics and predictive insights.
-        """
-    )
-
-    st.divider()
-
-    # =====================================================
     # QUICK STATS
     # =====================================================
 

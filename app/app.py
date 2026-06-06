@@ -234,7 +234,7 @@ if page == "🏠 Home":
     # WHY THIS MATTERS
     # =====================================================
 
-    st.subheader("🌍 Why This Matters")
+    st.subheader("Why This Matters")
 
     st.info(
         """

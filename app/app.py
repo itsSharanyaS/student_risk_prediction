@@ -86,7 +86,7 @@ if not st.session_state.logged_in:
 
     if st.button("Login"):
 
-        if username == "teacher" and password == "eduai2026":
+        if username == "admin" and password == "admin123":
 
             st.session_state.logged_in = True
 
@@ -262,7 +262,7 @@ page = st.sidebar.radio(
 if page == "🏠 Home":
 
     st.title(
-        "🎓 Student Performance Risk Prediction & Early Warning System"
+        "Student Performance Risk Prediction & Early Warning System"
     )
 
     st.write(
@@ -311,41 +311,6 @@ if page == "🏠 Home":
             "High Risk",
             len(df[df["Risk_Level"] == "High Risk"])
         )
-
-    st.divider()
-
-    # =====================================================
-    # DATASET INFORMATION
-    # =====================================================
-
-    st.subheader("🗂 Dataset Information")
-
-    dataset_info = pd.DataFrame({
-
-        "Metric": [
-            "Records",
-            "Features",
-            "Target Variable",
-            "Missing Values"
-        ],
-
-        "Value": [
-            "5",
-            "12",
-            "Pass_Fail",
-            "0"
-        ]
-    })
-
-    st.table(dataset_info)
-
-    st.success(
-        "🎯 Target Variable: Pass / Fail Prediction"
-    )
-
-    st.info(
-        "The dataset is used to analyze academic performance patterns and identify students at academic risk."
-    )
 
     st.divider()
 
@@ -399,27 +364,7 @@ if page == "🏠 Home":
         )
 
     st.divider()
-
-    # =====================================================
-    # NAVIGATION GUIDE
-    # =====================================================
-
-    st.subheader("🧭 Navigation Guide")
-
-    st.info(
-        """
-        Use the LEFT SIDEBAR MENU to access:
-        
-        • Dashboard
-        
-        • Prediction
-        
-        • Analytics
-        
-        • About Page
-        """
-    )
-
+ 
 # =====================================================
 # DASHBOARD PAGE
 # =====================================================

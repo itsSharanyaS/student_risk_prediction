@@ -16,32 +16,24 @@ st.set_page_config(
 )
 
 # =====================================================
-# PROFESSIONAL DARK THEME
+# DARK PROFESSIONAL UI
 # =====================================================
 
 st.markdown("""
 <style>
 
-/* MAIN APP */
-
 .stApp {
     background-color: #0b1120;
 }
-
-/* TITLES */
 
 h1, h2, h3 {
     color: white !important;
 }
 
-/* TEXT */
-
 p, label, div {
     color: #e5e7eb;
     font-size: 16px;
 }
-
-/* SIDEBAR */
 
 section[data-testid="stSidebar"] {
     background-color: #1e293b;
@@ -49,16 +41,12 @@ section[data-testid="stSidebar"] {
     width: 320px !important;
 }
 
-/* METRIC CARDS */
-
 [data-testid="metric-container"] {
     background-color: #1f2937;
     border: 1px solid #374151;
     padding: 15px;
     border-radius: 15px;
 }
-
-/* BUTTONS */
 
 .stButton button {
     background-color: #2563eb;
@@ -69,8 +57,6 @@ section[data-testid="stSidebar"] {
     height: 3em;
 }
 
-/* ALERT BOXES */
-
 .stAlert {
     border-radius: 12px;
 }
@@ -79,7 +65,7 @@ section[data-testid="stSidebar"] {
 """, unsafe_allow_html=True)
 
 # =====================================================
-# LOGIN SCREEN
+# LOGIN SYSTEM
 # =====================================================
 
 if "logged_in" not in st.session_state:
@@ -87,13 +73,9 @@ if "logged_in" not in st.session_state:
 
 if not st.session_state.logged_in:
 
-    st.title("Student Risk Prediction System")
+    st.title("🎓 Student Risk Prediction System")
 
-    st.subheader("🔐 School Admin Login")
-
-    st.write(
-        "Access the AI-powered educational analytics platform."
-    )
+    st.subheader("🔐 Teacher / Admin Login")
 
     username = st.text_input("Username")
 
@@ -104,7 +86,7 @@ if not st.session_state.logged_in:
 
     if st.button("Login"):
 
-        if username == "admin" and password == "admin123":
+        if username == "teacher" and password == "eduai2026":
 
             st.session_state.logged_in = True
 
@@ -119,43 +101,106 @@ if not st.session_state.logged_in:
     st.stop()
 
 # =====================================================
-# LOAD DATA
+# STUDENT DATASET (ONLY 5 STUDENTS)
 # =====================================================
 
-df = pd.read_csv("data/processed_data.csv")
+data = {
+
+    "Student_ID": [1, 2, 3, 4, 5],
+
+    "Gender": [
+        "F",
+        "M",
+        "F",
+        "M",
+        "F"
+    ],
+
+    "Age": [
+        18,
+        19,
+        17,
+        18,
+        19
+    ],
+
+    "Study_Hours_Per_Week": [
+        25,
+        10,
+        18,
+        8,
+        30
+    ],
+
+    "Attendance_Percentage": [
+        92,
+        58,
+        75,
+        40,
+        96
+    ],
+
+    "Previous_Score": [
+        88,
+        52,
+        67,
+        45,
+        92
+    ],
+
+    "Parental_Education_Level": [
+        "Graduate",
+        "High School",
+        "Graduate",
+        "High School",
+        "Postgraduate"
+    ],
+
+    "Internet_Access": [
+        "Yes",
+        "No",
+        "Yes",
+        "No",
+        "Yes"
+    ],
+
+    "Extracurricular_Activities": [
+        "Yes",
+        "No",
+        "Yes",
+        "No",
+        "Yes"
+    ],
+
+    "Sleep_Hours": [
+        7,
+        5,
+        6,
+        4,
+        8
+    ],
+
+    "Final_Exam_Score": [
+        91,
+        46,
+        72,
+        38,
+        95
+    ],
+
+    "Pass_Fail": [
+        "Pass",
+        "Fail",
+        "Pass",
+        "Fail",
+        "Pass"
+    ]
+}
+
+df = pd.DataFrame(data)
 
 # =====================================================
-# USE ONLY 5 STUDENTS
-# =====================================================
-
-df = df.head(5)
-
-# =====================================================
-# STUDENT IDS
-# =====================================================
-
-df["Student_ID"] = range(1, len(df) + 1)
-
-# =====================================================
-# RANDOM GENDER
-# =====================================================
-
-df["Gender"] = [
-    random.choice(["M", "F"])
-    for _ in range(len(df))
-]
-
-# =====================================================
-# FIND ATTENDANCE COLUMN
-# =====================================================
-
-attendance_column = [
-    col for col in df.columns
-    if "Attendance" in col
-][0]
-
-# =====================================================
-# CREATE RISK LEVELS
+# CREATE RISK LEVEL
 # =====================================================
 
 def get_risk(score):
@@ -181,7 +226,7 @@ st.sidebar.markdown(
     """
     # 🎓 Dashboard Menu
     
-    Navigate through the AI-powered student analytics system.
+    Navigate through the analytics system.
     """
 )
 
@@ -217,7 +262,7 @@ page = st.sidebar.radio(
 if page == "🏠 Home":
 
     st.title(
-        "Student Performance Risk Prediction & Early Warning System"
+        "🎓 Student Performance Risk Prediction & Early Warning System"
     )
 
     st.write(
@@ -237,7 +282,7 @@ if page == "🏠 Home":
     st.subheader("📈 Quick Statistics")
 
     pass_count = len(
-        df[df["Final_Exam_Score"] >= 50]
+        df[df["Pass_Fail"] == "Pass"]
     )
 
     pass_percent = round(
@@ -270,6 +315,54 @@ if page == "🏠 Home":
     st.divider()
 
     # =====================================================
+    # DATASET INFORMATION
+    # =====================================================
+
+    st.subheader("🗂 Dataset Information")
+
+    dataset_info = pd.DataFrame({
+
+        "Metric": [
+            "Records",
+            "Features",
+            "Target Variable",
+            "Missing Values"
+        ],
+
+        "Value": [
+            "5",
+            "12",
+            "Pass_Fail",
+            "0"
+        ]
+    })
+
+    st.table(dataset_info)
+
+    st.success(
+        "🎯 Target Variable: Pass / Fail Prediction"
+    )
+
+    st.info(
+        "The dataset is used to analyze academic performance patterns and identify students at academic risk."
+    )
+
+    st.divider()
+
+    # =====================================================
+    # STUDENT DATASET PREVIEW
+    # =====================================================
+
+    st.subheader("📚 Student Dataset Preview")
+
+    st.dataframe(
+        df,
+        use_container_width=True
+    )
+
+    st.divider()
+
+    # =====================================================
     # FEATURES
     # =====================================================
 
@@ -284,7 +377,7 @@ if page == "🏠 Home":
         )
 
         st.info(
-            "📊 Dashboard Analytics\n\nInteractive charts and educational analytics."
+            "📊 Dashboard Analytics\n\nInteractive charts and analytics."
         )
 
         st.info(
@@ -305,6 +398,28 @@ if page == "🏠 Home":
             "📥 Download Reports\n\nExport reports instantly."
         )
 
+    st.divider()
+
+    # =====================================================
+    # NAVIGATION GUIDE
+    # =====================================================
+
+    st.subheader("🧭 Navigation Guide")
+
+    st.info(
+        """
+        Use the LEFT SIDEBAR MENU to access:
+        
+        • Dashboard
+        
+        • Prediction
+        
+        • Analytics
+        
+        • About Page
+        """
+    )
+
 # =====================================================
 # DASHBOARD PAGE
 # =====================================================
@@ -319,9 +434,7 @@ elif page == "📊 Dashboard":
 
     st.divider()
 
-    # =====================================================
     # KPI CARDS
-    # =====================================================
 
     col1, col2, col3, col4 = st.columns(4)
 
@@ -369,8 +482,8 @@ elif page == "📊 Dashboard":
         pie_chart = px.pie(
             names=["Pass", "Fail"],
             values=[
-                len(df[df["Final_Exam_Score"] >= 50]),
-                len(df[df["Final_Exam_Score"] < 50])
+                len(df[df["Pass_Fail"] == "Pass"]),
+                len(df[df["Pass_Fail"] == "Fail"])
             ],
             title="Pass vs Fail Distribution"
         )
@@ -379,6 +492,51 @@ elif page == "📊 Dashboard":
             pie_chart,
             use_container_width=True
         )
+
+    st.divider()
+
+    # =====================================================
+    # STUDENT TABLE
+    # =====================================================
+
+    st.subheader("📚 Student Records")
+
+    st.dataframe(
+        df,
+        use_container_width=True
+    )
+
+    st.divider()
+
+    # =====================================================
+    # AI INSIGHTS
+    # =====================================================
+
+    st.subheader("🧠 AI Educational Insights")
+
+    low_attendance = df[
+        df["Attendance_Percentage"] < 60
+    ]
+
+    st.warning(
+        f"📌 {len(low_attendance)} students have attendance below 60%."
+    )
+
+    high_risk = df[
+        df["Risk_Level"] == "High Risk"
+    ]
+
+    st.error(
+        f"🚨 {len(high_risk)} students are classified as high-risk."
+    )
+
+    st.success(
+        "📈 Students with higher attendance show better academic performance."
+    )
+
+    st.info(
+        "📊 Attendance and exam performance show positive correlation."
+    )
 
     st.divider()
 
@@ -404,159 +562,6 @@ elif page == "📊 Dashboard":
         f"📉 Student {weak_student['Student_ID']} requires academic support."
     )
 
-    st.info(
-        "📊 Students with better attendance generally perform better in final exams."
-    )
-
-    st.info(
-        "📈 Attendance and performance show a positive academic trend."
-    )
-
-    st.divider()
-
-    # =====================================================
-    # STUDENT PROFILE
-    # =====================================================
-
-    st.subheader("👨‍🎓 Student Profile")
-
-    selected_student = st.selectbox(
-        "Select Student",
-        df["Student_ID"]
-    )
-
-    student_data = df[
-        df["Student_ID"] == selected_student
-    ]
-
-    score = int(
-        student_data["Final_Exam_Score"].values[0]
-    )
-
-    attendance = int(
-        student_data[attendance_column].values[0]
-    )
-
-    gender = student_data["Gender"].values[0]
-
-    risk = student_data["Risk_Level"].values[0]
-
-    col1, col2, col3, col4 = st.columns(4)
-
-    with col1:
-        st.metric("Final Score", score)
-
-    with col2:
-        st.metric("Attendance", f"{attendance}%")
-
-    with col3:
-        st.metric("Gender", gender)
-
-    with col4:
-        st.metric("Risk Level", risk)
-
-    st.divider()
-
-    # =====================================================
-    # AI INSIGHTS
-    # =====================================================
-
-    st.subheader("🧠 AI Educational Insights")
-
-    low_attendance_students = df[
-        df[attendance_column] < 60
-    ]
-
-    if len(low_attendance_students) > 0:
-
-        st.warning(
-            f"📌 {len(low_attendance_students)} students have attendance below 60%, increasing academic risk."
-        )
-
-    high_risk_students = df[
-        df["Risk_Level"] == "High Risk"
-    ]
-
-    st.error(
-        f"🚨 {len(high_risk_students)} students are currently classified as high-risk."
-    )
-
-    correlation = df[attendance_column].corr(
-        df["Final_Exam_Score"]
-    )
-
-    if correlation > 0.5:
-
-        st.success(
-            "📊 Attendance has a strong positive relationship with academic performance."
-        )
-
-    else:
-
-        st.warning(
-            "📊 Attendance shows weak correlation with academic performance."
-        )
-
-    st.info(
-        "📈 Students with higher attendance show better academic outcomes."
-    )
-
-    st.divider()
-
-    # =====================================================
-    # INTERVENTION RECOMMENDATIONS
-    # =====================================================
-
-    st.subheader("🛠 Intervention Recommendations")
-
-    if risk == "High Risk":
-
-        st.error(
-            """
-            🔴 Recommended Intervention Plan
-            
-            • Conduct parent-teacher meeting
-            
-            • Weekly mentoring sessions
-            
-            • Daily attendance monitoring
-            
-            • Extra assignment support
-            
-            • Academic counseling
-            """
-        )
-
-    elif risk == "Medium Risk":
-
-        st.warning(
-            """
-            🟡 Suggested Academic Support
-            
-            • Improve study consistency
-            
-            • Monitor assignments
-            
-            • Increase classroom participation
-            
-            • Provide additional practice materials
-            """
-        )
-
-    else:
-
-        st.success(
-            """
-            🟢 Student Performance is Stable
-            
-            • Continue regular monitoring
-            
-            • Encourage advanced learning
-            
-            • Maintain attendance consistency
-            """
-        )
-
 # =====================================================
 # PREDICTION PAGE
 # =====================================================
@@ -566,76 +571,69 @@ elif page == "🎯 Prediction":
     st.title("🎯 Student Risk Prediction")
 
     attendance = st.slider(
-        "Attendance %",
+        "Attendance Percentage",
         0,
         100,
-        75
+        70
     )
 
     final_score = st.slider(
         "Final Exam Score",
         0,
         100,
-        70
+        65
     )
 
-    if st.button("Predict Risk"):
+    study_hours = st.slider(
+        "Study Hours Per Week",
+        0,
+        40,
+        15
+    )
+
+    if st.button("Predict Student Risk"):
 
         confidence = random.randint(85, 99)
 
         if final_score < 50 or attendance < 40:
 
-            risk = "HIGH RISK"
-
-            st.error(f"🔴 {risk}")
+            st.error("🔴 HIGH RISK")
 
             st.warning(
-                "Student requires immediate academic intervention."
-            )
-
-            st.info(
                 """
-                Suggested Actions:
+                Immediate intervention required.
                 
                 • Parent meeting
                 
-                • Weekly monitoring
+                • Academic mentoring
                 
-                • Mentoring support
-                
-                • Attendance improvement
+                • Attendance monitoring
                 """
             )
 
         elif final_score < 75:
 
-            risk = "MEDIUM RISK"
-
-            st.warning(f"🟡 {risk}")
+            st.warning("🟡 MEDIUM RISK")
 
             st.info(
                 """
-                Suggested Actions:
+                Moderate monitoring recommended.
                 
-                • Improve study hours
+                • Improve study consistency
                 
-                • Monitor assignments
-                
-                • Regular academic reviews
+                • Weekly progress review
                 """
             )
 
         else:
 
-            risk = "LOW RISK"
-
-            st.success(f"🟢 {risk}")
+            st.success("🟢 LOW RISK")
 
             st.info(
                 """
-                Suggested Actions:
+                Student performance is stable.
                 
-                • Maintain current performance
+                • Maintain consistency
                 
                 • Encourage advanced learning
                 """
@@ -647,8 +645,6 @@ elif page == "🎯 Prediction":
 
         st.progress(confidence / 100)
 
-        st.balloons()
-
 # =====================================================
 # ANALYTICS PAGE
 # =====================================================
@@ -657,27 +653,27 @@ elif page == "📈 Analytics":
 
     st.title("📈 Analytics Dashboard")
 
-    st.subheader("Final Score Trend")
+    st.subheader("📊 Final Score Trend")
 
     st.line_chart(
         df["Final_Exam_Score"]
     )
 
-    st.subheader("Attendance Analysis")
+    st.subheader("📚 Attendance Analysis")
 
     attendance_chart = df.set_index(
         "Student_ID"
     )
 
     st.bar_chart(
-        attendance_chart[attendance_column]
+        attendance_chart["Attendance_Percentage"]
     )
 
-    st.subheader("Attendance vs Final Score")
+    st.subheader("📈 Attendance vs Final Score")
 
     scatter_fig = px.scatter(
         df,
-        x=attendance_column,
+        x="Attendance_Percentage",
         y="Final_Exam_Score",
         color="Risk_Level",
         hover_data=["Student_ID"]
@@ -688,10 +684,14 @@ elif page == "📈 Analytics":
         use_container_width=True
     )
 
+    st.divider()
+
+    st.subheader("📥 Export Dataset")
+
     csv = df.to_csv(index=False).encode("utf-8")
 
     st.download_button(
-        label="📥 Download Student Report",
+        label="Download CSV Report",
         data=csv,
         file_name="student_report.csv",
         mime="text/csv"
@@ -710,7 +710,7 @@ elif page == "📘 About":
 ### Student Performance Risk Prediction & Early Warning System
 
 AI-powered educational analytics platform designed
-for identifying academically at-risk students.
+to identify academically at-risk students.
 
 ### Technologies Used
 
@@ -719,23 +719,21 @@ for identifying academically at-risk students.
 - Pandas
 - Plotly
 
-### Implemented Features
+### Features
 
 - Login Authentication
-- AI Educational Insights
 - Dashboard Analytics
+- AI Educational Insights
 - Risk Prediction
 - Trend Storytelling
-- Intervention Recommendations
 - Early Warning Alerts
 - Downloadable Reports
 
-### Project Objective
+### Objective
 
 To help educational institutions identify
-at-risk students early and improve
-academic outcomes through AI-driven analytics.
-
+students requiring academic intervention
+using AI-powered analytics.
 """)
 
 # =====================================================
@@ -753,7 +751,8 @@ st.markdown(
     </h3>
 
     <p style='color:#94a3b8;'>
-    AI-powered educational analytics platform for identifying academically at-risk students.
+    AI-powered educational analytics platform
+    for identifying academically at-risk students.
     </p>
 
     <p style='color:#64748b; font-size:14px;'>

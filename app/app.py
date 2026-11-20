@@ -8,7 +8,7 @@ import tempfile
 import os
 
 # ==========================================================
-# PAGE CONFIG
+# PAGE CONFIGURATION
 # ==========================================================
 st.set_page_config(
     page_title="Student Risk Prediction System",
@@ -18,7 +18,7 @@ st.set_page_config(
 )
 
 # ==========================================================
-# PROFESSIONAL DARK UI
+# DARK PROFESSIONAL UI
 # ==========================================================
 st.markdown("""
 <style>
@@ -26,14 +26,14 @@ st.markdown("""
     background-color: #0b1120;
 }
 h1, h2, h3 {
-    color: #ffffff !important;
+    color: white !important;
 }
 p, label {
     color: #e5e7eb;
 }
 section[data-testid="stSidebar"] {
     background-color: #1e293b;
-    border-right: 2px solid #2563eb;
+    border-right: 3px solid #2563eb;
 }
 [data-testid="metric-container"] {
     background-color: #1f2937;
@@ -51,62 +51,61 @@ section[data-testid="stSidebar"] {
 }
 .stButton > button:hover {
     background-color: #1d4ed8;
-    border: 1px solid #60a5fa;
 }
 </style>
 """, unsafe_allow_html=True)
 
 # ==========================================================
-# AUTHENTICATION CONFIGURATION
+# AUTHENTICATION
 # ==========================================================
-# Demo password - change before deployment.
-# Prefer storing credentials in Streamlit Secrets.
+# Demo credentials - replace before public deployment
+USERNAME = "admin"
+PASSWORD = "admin123"
 
-DEMO_USERNAME = "admin"
-DEMO_PASSWORD = "admin123"
-
+# Your registered face image must be placed beside app.py
 FACE_REFERENCE = Path("face_reference.jpg")
 
 
 def verify_face(uploaded_face):
-    """
-    Compares the webcam image with the registered reference image.
-    Requires DeepFace and a local reference image.
-    """
+
     if not FACE_REFERENCE.exists():
-        return False, "Reference image not found."
+        return False, "face_reference.jpg is missing."
+
+    temp_path = None
 
     try:
         from deepface import DeepFace
 
+        # Save webcam image to a temporary file
         with tempfile.NamedTemporaryFile(
-            suffix=".jpg", delete=False
+            suffix=".jpg",
+            delete=False
         ) as temp_file:
-            uploaded_face.save(temp_file.name)
+
+            temp_file.write(uploaded_face.getvalue())
+            temp_file.flush()
             temp_path = temp_file.name
 
-        try:
-            result = DeepFace.verify(
-                img1_path=str(FACE_REFERENCE),
-                img2_path=temp_path,
-                model_name="Facenet",
-                detector_backend="opencv",
-                enforce_detection=True
-            )
+        # Compare captured face with registered reference
+        result = DeepFace.verify(
+            img1_path=str(FACE_REFERENCE),
+            img2_path=temp_path,
+            model_name="Facenet",
+            detector_backend="opencv",
+            enforce_detection=True
+        )
 
-            verified = result.get("verified", False)
+        if result.get("verified", False):
+            return True, "Face recognized successfully."
 
-            if verified:
-                return True, "Face verified successfully."
+        return False, "Face not recognized."
 
-            return False, "Face does not match."
+    except Exception as error:
+        return False, f"Verification error: {error}"
 
-        finally:
-            if os.path.exists(temp_path):
-                os.remove(temp_path)
-
-    except Exception as e:
-        return False, f"Face verification failed: {str(e)}"
+    finally:
+        if temp_path and os.path.exists(temp_path):
+            os.remove(temp_path)
 
 
 # ==========================================================
@@ -116,14 +115,14 @@ if "logged_in" not in st.session_state:
     st.session_state.logged_in = False
 
 if "login_method" not in st.session_state:
-    st.session_state.login_method = None
+    st.session_state.login_method = ""
 
 if "user_name" not in st.session_state:
     st.session_state.user_name = "Admin"
 
 
 # ==========================================================
-# LOGIN PAGE
+# LOGIN SCREEN
 # ==========================================================
 if not st.session_state.logged_in:
 
@@ -133,49 +132,50 @@ if not st.session_state.logged_in:
 
     with center:
 
-        st.markdown(
-            """
-            <div style="text-align:center;">
-                <h1>🎓 EduGuard AI</h1>
-                <p>Student Performance Risk Prediction System</p>
-                <p>🔐 Secure Admin Authentication</p>
-            </div>
-            """,
-            unsafe_allow_html=True
-        )
+        st.markdown("""
+        <div style="text-align:center;">
+            <h1>🎓 EduGuard AI</h1>
+            <h3>Student Risk Prediction System</h3>
+            <p>Secure Authentication Portal</p>
+        </div>
+        """, unsafe_allow_html=True)
 
         st.divider()
 
-        login_tab, password_tab = st.tabs(
+        face_tab, password_tab = st.tabs(
             ["📷 Face Login", "🔑 Password Login"]
         )
 
         # --------------------------------------------------
         # FACE LOGIN
         # --------------------------------------------------
-        with login_tab:
+        with face_tab:
 
-            st.markdown("### Face Recognition")
+            st.subheader("Face Recognition Login")
+
             st.write(
-                "Position your face in front of the camera "
-                "and capture an image to verify your identity."
+                "Capture your face using the webcam "
+                "to verify your identity."
             )
 
-            face_image = st.camera_input(
+            captured_face = st.camera_input(
                 "Capture your face",
-                key="face_camera"
+                key="face_capture"
             )
 
-            if face_image is not None:
+            if captured_face is not None:
 
                 if st.button(
                     "🔍 Verify Face",
+                    key="verify_face_button",
                     use_container_width=True
                 ):
 
-                    with st.spinner("Verifying your face..."):
+                    with st.spinner("Verifying face..."):
 
-                        verified, message = verify_face(face_image)
+                        verified, message = verify_face(
+                            captured_face
+                        )
 
                     if verified:
 
@@ -183,14 +183,15 @@ if not st.session_state.logged_in:
                         st.session_state.login_method = "Face Recognition"
                         st.session_state.user_name = "Admin"
 
-                        st.success("Face recognized! Login successful.")
+                        st.success("Face verified successfully!")
                         st.rerun()
 
                     else:
+
                         st.error(message)
                         st.warning(
-                            "Face verification failed. "
-                            "Please use password login."
+                            "If face recognition fails, "
+                            "use Password Login."
                         )
 
         # --------------------------------------------------
@@ -198,28 +199,22 @@ if not st.session_state.logged_in:
         # --------------------------------------------------
         with password_tab:
 
-            st.markdown("### Admin Password Login")
+            st.subheader("Admin Login")
 
-            username = st.text_input(
-                "Username",
-                key="login_username"
-            )
+            username = st.text_input("Username")
 
             password = st.text_input(
                 "Password",
-                type="password",
-                key="login_password"
+                type="password"
             )
 
             if st.button(
                 "🔓 Login",
+                key="password_login",
                 use_container_width=True
             ):
 
-                if (
-                    username == DEMO_USERNAME
-                    and password == DEMO_PASSWORD
-                ):
+                if username == USERNAME and password == PASSWORD:
 
                     st.session_state.logged_in = True
                     st.session_state.login_method = "Password"
@@ -229,24 +224,26 @@ if not st.session_state.logged_in:
                     st.rerun()
 
                 else:
+
                     st.error("Invalid username or password.")
 
         st.divider()
 
-        st.caption(
-            "Authorized access only • Student Analytics System"
-        )
+        st.caption("Authorized access only.")
 
     st.stop()
 
 
 # ==========================================================
-# LOGOUT FUNCTION
+# LOGOUT
 # ==========================================================
-def logout():
+if st.sidebar.button("🚪 Logout", use_container_width=True):
+
     st.session_state.logged_in = False
-    st.session_state.login_method = None
+    st.session_state.login_method = ""
     st.session_state.user_name = "Admin"
+
+    st.rerun()
 
 
 # ==========================================================
@@ -279,7 +276,7 @@ df = pd.DataFrame(data)
 
 
 # ==========================================================
-# RISK CLASSIFICATION
+# RISK LEVEL
 # ==========================================================
 def get_risk(score):
 
@@ -289,35 +286,41 @@ def get_risk(score):
     elif score < 75:
         return "Medium Risk"
 
-    return "Low Risk"
+    else:
+        return "Low Risk"
 
 
-df["Risk_Level"] = df["Final_Exam_Score"].apply(get_risk)
+df["Risk_Level"] = df["Final_Exam_Score"].apply(
+    get_risk
+)
 
 
 # ==========================================================
 # SIDEBAR
 # ==========================================================
 st.sidebar.markdown("# 🎓 EduGuard AI")
-st.sidebar.caption("Student Risk Analytics Platform")
+st.sidebar.caption("Academic Risk Analytics")
 
 st.sidebar.success("🟢 System Active")
 
-st.sidebar.metric("Total Students", len(df))
+st.sidebar.metric(
+    "Total Students",
+    len(df)
+)
 
 st.sidebar.metric(
     "High Risk Students",
     len(df[df["Risk_Level"] == "High Risk"])
 )
 
-st.sidebar.markdown("---")
+st.sidebar.divider()
 
 st.sidebar.write(
-    f"👤 Logged in as: **{st.session_state.user_name}**"
+    f"👤 Welcome, {st.session_state.user_name}"
 )
 
 st.sidebar.caption(
-    f"Login Method: {st.session_state.login_method}"
+    f"Authenticated via {st.session_state.login_method}"
 )
 
 page = st.sidebar.radio(
@@ -331,57 +334,54 @@ page = st.sidebar.radio(
     ]
 )
 
-st.sidebar.markdown("---")
-
-if st.sidebar.button("🚪 Logout", use_container_width=True):
-    logout()
-    st.rerun()
-
 
 # ==========================================================
-# HOME PAGE
+# HOME
 # ==========================================================
 if page == "🏠 Home":
 
     st.title("🎓 Student Performance Risk Prediction")
     st.subheader("Early Warning & Academic Analytics System")
 
-    st.write("""
-    An educational analytics system designed to analyze student academic data,
-    identify students who may be academically at risk, and support
-    early intervention.
-    """)
-
     st.success(
-        f"Welcome, {st.session_state.user_name}! "
-        "You are successfully authenticated."
+        f"Welcome {st.session_state.user_name}! "
+        "You are successfully logged in."
     )
+
+    st.write("""
+    This system analyzes student academic information
+    to identify students who may require academic support.
+    It helps institutions monitor performance and recognize
+    academic risk at an early stage.
+    """)
 
     st.divider()
 
-    pass_count = len(df[df["Pass_Fail"] == "Pass"])
+    pass_count = len(
+        df[df["Pass_Fail"] == "Pass"]
+)
 
     pass_percent = round(
-        (pass_count / len(df)) * 100, 2
-    )
+    (pass_count / len(df)) * 100, 2
+)
 
     avg_score = round(
-        df["Final_Exam_Score"].mean(), 2
-    )
+    df["Final_Exam_Score"].mean(), 2
+)
 
     col1, col2, col3, col4 = st.columns(4)
 
-    col1.metric("👨‍🎓 Students", len(df))
-    col2.metric("📊 Average Score", avg_score)
-    col3.metric("✅ Pass Percentage", f"{pass_percent}%")
+    col1.metric("Students", len(df))
+    col2.metric("Average Score", avg_score)
+    col3.metric("Pass Percentage", f"{pass_percent}%")
     col4.metric(
-        "🚨 High Risk",
+        "High Risk Students",
         len(df[df["Risk_Level"] == "High Risk"])
     )
 
     st.divider()
 
-    st.subheader("📚 Student Dataset Preview")
+    st.subheader("📚 Dataset Preview")
 
     st.dataframe(
         df,
@@ -397,13 +397,13 @@ if page == "🏠 Home":
 
     with col1:
         st.info("🎯 Student Risk Prediction")
-        st.info("📊 Interactive Dashboard")
+        st.info("📊 Dashboard Analytics")
         st.info("🚨 Early Warning Identification")
 
     with col2:
         st.info("🧠 Academic Insights")
-        st.info("📈 Performance Analytics")
-        st.info("📥 CSV Report Export")
+        st.info("📈 Performance Visualization")
+        st.info("📥 Downloadable Reports")
 
 
 # ==========================================================
@@ -414,20 +414,24 @@ elif page == "📊 Dashboard":
     st.title("📊 Student Dashboard")
 
     st.caption(
-        f"Last Updated: {datetime.now().strftime('%d %B %Y %H:%M')}"
+        "Last Updated: "
+        + datetime.now().strftime("%d %B %Y %H:%M")
     )
 
     col1, col2, col3, col4 = st.columns(4)
 
-    col1.metric("Students", len(df))
+    col1.metric("Total Students", len(df))
+
     col2.metric(
         "Average Score",
         round(df["Final_Exam_Score"].mean(), 2)
     )
+
     col3.metric(
         "Highest Score",
         df["Final_Exam_Score"].max()
     )
+
     col4.metric(
         "Lowest Score",
         df["Final_Exam_Score"].min()
@@ -496,7 +500,7 @@ elif page == "📊 Dashboard":
 
     st.info(
         "Attendance and academic performance should be monitored "
-        "regularly to identify students requiring support."
+        "regularly for early identification."
     )
 
     top_student = df.loc[
@@ -508,12 +512,13 @@ elif page == "📊 Dashboard":
     ]
 
     st.success(
-        f"🏆 Student {top_student['Student_ID']} is the top performer "
+        f"🏆 Top Performer: Student {top_student['Student_ID']} "
         f"with score {top_student['Final_Exam_Score']}."
     )
 
     st.warning(
-        f"📉 Student {weak_student['Student_ID']} requires academic support."
+        f"📉 Student {weak_student['Student_ID']} "
+        "requires academic support."
     )
 
 
@@ -522,10 +527,10 @@ elif page == "📊 Dashboard":
 # ==========================================================
 elif page == "🎯 Prediction":
 
-    st.title("🎯 Student Risk Assessment")
+    st.title("🎯 Student Risk Prediction")
 
     st.write(
-        "Enter student academic details to identify their risk category."
+        "Enter academic details to assess the student's risk level."
     )
 
     col1, col2 = st.columns(2)
@@ -549,7 +554,10 @@ elif page == "🎯 Prediction":
             0, 40, 15
         )
 
-    if st.button("🔍 Predict Student Risk", use_container_width=True):
+    if st.button(
+        "🔍 Predict Student Risk",
+        use_container_width=True
+    ):
 
         if final_score < 50 or attendance < 40:
 
@@ -570,12 +578,12 @@ elif page == "🎯 Prediction":
             st.error("🔴 HIGH RISK")
 
             st.warning("""
-            Recommended academic interventions:
+            Recommended interventions:
 
-            - Arrange academic mentoring
-            - Monitor attendance regularly
-            - Conduct a student counseling session
-            - Provide remedial classes
+            - Academic mentoring
+            - Attendance monitoring
+            - Counseling
+            - Remedial classes
             """)
 
         elif risk == "Medium Risk":
@@ -587,8 +595,8 @@ elif page == "🎯 Prediction":
 
             - Improve study consistency
             - Monitor attendance
-            - Conduct weekly progress reviews
-            - Provide additional practice
+            - Weekly progress review
+            - Additional practice
             """)
 
         else:
@@ -598,15 +606,19 @@ elif page == "🎯 Prediction":
             st.info("""
             Student performance appears stable.
 
-            - Maintain consistent study habits
+            - Maintain study consistency
             - Continue regular attendance
             - Encourage advanced learning
             """)
 
-        st.metric("Predicted Risk Category", risk)
+        st.metric(
+            "Predicted Risk Category",
+            risk
+        )
 
         st.caption(
-            "This is a rule-based risk assessment, not a trained ML model."
+            "Risk is assessed using predefined rules, "
+            "not a trained machine learning model."
         )
 
 
@@ -617,13 +629,13 @@ elif page == "📈 Analytics":
 
     st.title("📈 Analytics Dashboard")
 
-    st.subheader("📊 Final Score Trend")
+    st.subheader("Final Score Trend")
 
     st.line_chart(
         df["Final_Exam_Score"]
     )
 
-    st.subheader("📚 Attendance Analysis")
+    st.subheader("Attendance Analysis")
 
     attendance_chart = df.set_index("Student_ID")
 
@@ -631,7 +643,7 @@ elif page == "📈 Analytics":
         attendance_chart["Attendance_Percentage"]
     )
 
-    st.subheader("📈 Attendance vs Final Score")
+    st.subheader("Attendance vs Final Exam Score")
 
     scatter_fig = px.scatter(
         df,
@@ -639,8 +651,8 @@ elif page == "📈 Analytics":
         y="Final_Exam_Score",
         color="Risk_Level",
         hover_data=["Student_ID"],
-        title="Attendance vs Academic Performance",
-        size="Study_Hours_Per_Week"
+        size="Study_Hours_Per_Week",
+        title="Attendance vs Performance"
     )
 
     st.plotly_chart(
@@ -650,12 +662,14 @@ elif page == "📈 Analytics":
 
     st.divider()
 
-    st.subheader("📥 Export Dataset")
+    st.subheader("📥 Export Report")
 
-    csv = df.to_csv(index=False).encode("utf-8")
+    csv = df.to_csv(
+        index=False
+    ).encode("utf-8")
 
     st.download_button(
-        label="⬇️ Download CSV Report",
+        label="⬇️ Download Student CSV Report",
         data=csv,
         file_name="student_risk_report.csv",
         mime="text/csv"
@@ -667,13 +681,13 @@ elif page == "📈 Analytics":
 # ==========================================================
 elif page == "📘 About":
 
-    st.title("📘 About the Project")
+    st.title("📘 About Project")
 
     st.markdown("""
     ## Student Performance Risk Prediction & Early Warning System
 
-    An educational analytics platform designed to identify academically
-    at-risk students and support early academic intervention.
+    An educational analytics application designed to identify
+    academically at-risk students.
 
     ### Technologies Used
 
@@ -681,22 +695,24 @@ elif page == "📘 About":
     - Streamlit
     - Pandas
     - Plotly
-    - OpenCV / DeepFace for face verification
+    - DeepFace
+    - OpenCV
 
     ### Features
 
-    - Secure authentication
-    - Face recognition
+    - Secure login
+    - Face verification
     - Student dashboard
-    - Academic risk assessment
-    - Analytics and visualization
+    - Risk assessment
+    - Academic analytics
     - Early warning identification
-    - CSV report download
+    - CSV report generation
 
     ### Objective
 
-    To support educational institutions in identifying students requiring
-    academic assistance through data analysis and risk assessment.
+    To help educational institutions identify students who
+    may require academic intervention using student data
+    analysis and risk assessment.
     """)
 
 
@@ -705,13 +721,9 @@ elif page == "📘 About":
 # ==========================================================
 st.markdown("---")
 
-st.markdown(
-    """
-    <div style="text-align:center;padding:15px;">
-        <h3>🎓 Student Risk Prediction System</h3>
-        <p>AI-powered educational analytics platform</p>
-        <p>Smart Education • Academic Analytics • Early Warning</p>
-    </div>
-    """,
-    unsafe_allow_html=True
-)
+st.markdown("""
+<div style="text-align:center;padding:20px;">
+    <h3>🎓 Student Risk Prediction System</h3>
+    <p>Academic Analytics • Student Monitoring • Early Warning</p>
+</div>
+""", unsafe_allow_html=True)
